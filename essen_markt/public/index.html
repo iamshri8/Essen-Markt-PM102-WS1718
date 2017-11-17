@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="A6EEG20kWeQdzqMUolA4FMv7iq2GRJcR4IA4VH9Q1ZY" />
+    <title>Welcome to Essen Markt</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet/less" type="text/css" href="css/index.less" />
+
+    <!-- Google platform javascript library -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Firebase -->
+    <script  src="/__/firebase/4.5.1/firebase-app.js"></script>
+
+    <!-- Firebase features-->
+    <script defer src="/__/firebase/4.5.1/firebase-auth.js"></script>
+    <script defer src="/__/firebase/4.5.1/firebase-database.js"></script>
+
+    <script src="less.js" type="text/javascript"></script>
+
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+    <script src="index.js" type="text/javascript"></script>
+
+
+</head>
+<body class="login-register-container">
+
+    <div class="login-register-component">
+        <div class="my-row">
+            <div class="btn-group btn-group-justified" data-toggle="buttons">
+                <label class="btn btn-primary active" id="login-tab">
+                    <input type="radio" name="options"> Login
+                </label>
+                <label class="btn btn-primary" id="sign-up-tab">
+                    <input type="radio" name="options" > Sign up
+                </label>
+            </div>
+        </div>
+        <div class="alert alert-warning hidden" id="error">
+        </div>
+        <div id="login" class="input-div">
+            <input type="text" class="form-control" id="login-mail" placeholder="Enter email address *"/>
+            <input type="password" class="form-control" id="login-pwd" placeholder="Enter password *"/>
+            <button type="button" class="btn btn-success" id="login-button">Get started</button>
+            <label> -----Or----- </label>
+            <div class="buttons">
+                <button type="button" class="btn btn-primary" id="login-google">Sign In With Google</button>
+                <button type="button" class="btn btn-primary" id="login-facebook">Sign In with Facebook</button>
+            </div>
+        </div>
+        <div id="sign-up" class="hidden input-div">
+            <input type="text" class="form-control" id="sign-up-name" placeholder="Enter user name *"/>
+            <input type="text" class="form-control" id="sign-up-mail" placeholder="Enter email address *"/>
+            <input type="password" class="form-control" id="sign-up-pwd" placeholder="Enter password *"/>
+            <button type="button" class="btn btn-success" id="sign-up-button">Sign up</button>
+        </div>
+    </div>
+</body>
+</html>
