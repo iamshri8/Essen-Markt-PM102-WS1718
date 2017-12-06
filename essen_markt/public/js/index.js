@@ -16,11 +16,32 @@ const clearLoginScreen = () => {
 };
 
 const addUserData = (id,name, email) => {
-    firebase.database().ref('/users/'+ id).set({
-        name: name,
-        email: email
-    })
+    $.ajax({
+        url: 'http://localhost:5000/addUser',
+        data: {
+            id: id,
+            name: name,
+            mail: email
+        },
+        dataType: 'text',
+        type: 'POST',
+        success: function(data) {
+            navigateToProductsPage(name);
+        },
+        error: function() {
+            $("#error").removeClass("hidden");
+            $("#error").append("error occurred in adding user data");
+        },
+    });
 };
+const navigateToProductsPage = (data) => {
+    var source = document.getElementById('entry-template').innerHTML;
+    var template = Handlebars.compile(source);
+    var html = template({data});
+    $('#products').html(html);
+    $(".login-register-component").addClass("hidden");
+};
+
 $(document).ready(() =>{
     var googleProvider = new firebase.auth.GoogleAuthProvider();
     var facebookProvider = new firebase.auth.FacebookAuthProvider();
@@ -30,14 +51,36 @@ $(document).ready(() =>{
     $("#sign-up-tab").click(() =>{
        clearLoginScreen();
     });
+
     $("#login-google").click(() =>{
-        provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+        googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
         firebase.auth().signInWithPopup(googleProvider).then(function(result) {
             // This gives you a Google Access Token. You can use it to access the Google API.
             var token = result.credential.accessToken;
             // The signed-in user info.
             var user = result.user;
-            // ...
+            $("#error").addClass("hidden");
+            addUserData(user.uid, user.displayName, user.email);
+
+        }).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+            $("#error").removeClass("hidden");
+            $("#error").html(errorMessage);
+        });
+    });
+    $("#login-facebook").click(() => {
+        firebase.auth().signInWithPopup(facebookProvider).then(function(result) {
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            var token = result.credential.accessToken;
+            // The signed-in user info.
+            var user = result.user;
+            $("#error").addClass("hidden");
             addUserData(user.uid, user.displayName, user.email);
         }).catch(function(error) {
             // Handle Errors here.
@@ -47,55 +90,24 @@ $(document).ready(() =>{
             var email = error.email;
             // The firebase.auth.AuthCredential type that was used.
             var credential = error.credential;
-            // ...
-        });
-    });
-    $("#login-facebook").click(() => {
-        firebase.auth().signInWithPopup(facebookProvider).then(function(result) {
-            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-            var token = result.credential.accessToken;
-            // The signed-in user info.
-            var user = result.user;
-            // ...
-        }).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // The email of the user's account used.
-            var email = error.email;
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential;
-            // ...
+            $("#error").removeClass("hidden");
+            $("#error").html(errorMessage);
         });
     });
     $("#login-button").click(() =>{
         firebase.auth().signInWithEmailAndPassword($("#login-mail").val(), $("#login-pwd").val()).then(function(user) {
             var user = firebase.auth().currentUser;
             $("#error").addClass("hidden");
+            navigateToProductsPage(user.email);
         }, function(error) {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
             $("#error").removeClass("hidden");
-            $("#error").append(errorMessage);
+            $("#error").html(errorMessage);
         });
 
-        /*$.ajax({
-            url: 'http://localhost:5000/login',
-            data: {
-                mail: $('#mail').val(),
-                pwd: $('#pwd').val()
-            },
-            error: function() {
-                $('#display').html('<p>An error has occurred</p>');
-            },
-            dataType: 'json',
-            success: function(data) {
-               $('#display')
-                    .app end(data);
-            },
-            type: 'POST'
-        });*/
+
     });
 
     $("#sign-up-button").click(() =>{
@@ -108,8 +120,7 @@ $(document).ready(() =>{
             var errorCode = error.code;
             var errorMessage = error.message;
             $("#error").removeClass("hidden");
-            $("#error").append(errorMessage);
+            $("#error").html(errorMessage);
         });
     });
-
 });
