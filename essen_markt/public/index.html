@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="google-site-verification" content="A6EEG20kWeQdzqMUolA4FMv7iq2GRJcR4IA4VH9Q1ZY" />
+    <meta name="google-site-verification" content="A6EEG20kWeQdzqMUolA4FMv7iq2GRJcR4IA4VH9Q1ZY"/>
     <title>Welcome to Essen Markt</title>
     <link rel="stylesheet/less" type="text/css" href="css/index.less"/>
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
@@ -16,7 +16,7 @@
     <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <!-- Firebase -->
-    <script  src="/__/firebase/4.5.1/firebase-app.js"></script>
+    <script src="/__/firebase/4.5.1/firebase-app.js"></script>
 
     <!-- Firebase features-->
     <script defer src="/__/firebase/4.5.1/firebase-auth.js"></script>
@@ -28,45 +28,59 @@
     <script type="text/javascript" src="lib/handlebars/handlebars.js"></script>
     <script src="js/index.js" type="text/javascript"></script>
     <script id="entry-template" type="text/x-handlebars-template">
-            <h1>{{data}}</h1>
+        <h1>{{data}}</h1>
     </script>
 
 
 </head>
-<body class="login-register-container">
-
-<div class="login-register-component">
-    <div class="my-row">
-        <div class="btn-group btn-group-justified" data-toggle="buttons">
-            <label class="btn btn-primary active" id="login-tab">
-                <input type="radio" name="options"> Login
-            </label>
-            <label class="btn btn-primary" id="sign-up-tab">
-                <input type="radio" name="options" > Sign up
-            </label>
+<body>
+<div class="body-container">
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">ESSEN MARKT</a>
+    </div>
+</nav>
+<div class="login-register-container">
+    <div class="login-register-component">
+        <div class="my-row">
+            <div class="btn-group btn-group-justified" data-toggle="buttons">
+                <label class="btn btn-primary focus active" id="login-tab">
+                    <input type="radio" name="options"> Login
+                </label>
+                <label class="btn btn-primary" id="sign-up-tab">
+                    <input type="radio" name="options"> Sign up
+                </label>
+            </div>
         </div>
-    </div>
-    <div class="alert alert-warning hidden" id="error">
-    </div>
-    <div id="login" class="input-div">
-        <input type="text" class="form-control" id="login-mail" placeholder="Enter email address *"/>
-        <input type="password" class="form-control" id="login-pwd" placeholder="Enter password *"/>
-        <button type="button" class="btn btn-success" id="login-button">Get started</button>
-        <label> -----Or----- </label>
-        <div class="buttons">
-            <button type="button" class="btn btn-primary" id="login-google">Sign In With Google</button>
-            <button type="button" class="btn btn-primary" id="login-facebook">Sign In with Facebook</button>
+        <div class="alert alert-warning hidden" id="error">
         </div>
-    </div>
-    <div id="sign-up" class="hidden input-div">
-        <input type="text" class="form-control" id="sign-up-name" placeholder="Enter user name *"/>
-        <input type="text" class="form-control" id="sign-up-mail" placeholder="Enter email address *"/>
-        <input type="password" class="form-control" id="sign-up-pwd" placeholder="Enter password *"/>
-        <button type="button" class="btn btn-success" id="sign-up-button">Sign up</button>
+        <div id="login" class="input-div">
+            <input type="text" class="form-control" id="login-mail" placeholder="Enter email address *"/>
+            <input type="password" class="form-control" id="login-pwd" placeholder="Enter password *"/>
+            <div class="buttons">
+                <button type="button" class="btn btn-success" id="login-button">Get started</button>
+                <button type="button" class="btn btn-success" id="forgot-password">Forgot password</button>
+            </div>
+            <label> -----Or----- </label>
+            <div class="buttons">
+                <button type="button" class="btn btn-primary" id="login-google">Sign In With Google</button>
+                <button type="button" class="btn btn-primary" id="login-facebook">Sign In with Facebook</button>
+            </div>
+        </div>
+        <div id="sign-up" class="hidden input-div">
+            <input type="text" class="form-control" id="sign-up-name" placeholder="Enter user name *"/>
+            <input type="text" class="form-control" id="sign-up-mail" placeholder="Enter email address *"/>
+            <input type="password" class="form-control" id="sign-up-pwd" placeholder="Enter password *"/>
+            <button type="button" class="btn btn-success" id="sign-up-button">Sign up</button>
+        </div>
     </div>
 </div>
-<div id="products"></div>
-
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+    <!-- /.container -->
+</footer>
+</div>
 </body>
 </html>
 

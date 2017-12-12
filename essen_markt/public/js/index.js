@@ -4,6 +4,7 @@ const clearSignUpScreen = () => {
     $("#error").addClass("hidden");
     $("#sign-up-mail").val("");
     $("#sign-up-pwd").val("");
+    $("#sign-up-name").val("");
     $("#login").removeClass("hidden");
 };
 

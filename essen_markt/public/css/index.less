@@ -2,6 +2,17 @@
 html {
   height: 100vh;
 }
+.body-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  >.navbar {
+    display: flex;
+    position: initial;
+    height: 100px;
+  }
+}
 
 .login-register-container {
   display: flex;
@@ -13,36 +24,34 @@ html {
     display: flex;
     flex-direction: column;
     width: 400px;
-    margin-top: 100px;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: lightgrey;
+    border-radius: 5px;
+    padding-top: 50px;
+    padding-bottom: 60px;
+    height: 400px;
 
     > .my-row {
-      margin-bottom: 40px;
+      margin-bottom: 20px;
+      .btn-group  {
+        display: flex;
+        flex: 1 1 0;
+
+        label {
+          width: 100%;
+        }
+      }
     }
 
-    > .input-div {
+    .input-div {
       display: flex;
       flex-direction: column;
       align-items: center;
+    }
 
-      .btn-success {
-        margin-top: 20px;
-        width: 100%;
-      }
+    .hidden {
+      display: none;
     }
   }
-
-  .hidden {
-    display: none;
-  }
-}
- .login-register-container::after {
-  content: "";
-  background-image: url("../images/bg.jpg");
-  opacity: 0.5;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  position: absolute;
-  z-index: -1;
 }
