@@ -7,7 +7,6 @@
     <title>Welcome to Essen Markt</title>
     <link rel="stylesheet/less" type="text/css" href="css/index.less"/>
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
-
     <!-- Google platform javascript library -->
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 
@@ -30,56 +29,80 @@
     <script id="entry-template" type="text/x-handlebars-template">
         <h1>{{data}}</h1>
     </script>
-
-
 </head>
+
 <body>
 <div class="body-container">
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-        <a class="navbar-brand" href="#">ESSEN MARKT</a>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">ESSEN MARKT</a>
+        </div>
+    </nav>
+
+    <!-- login component -->
+    <div class="login-register-container">
+        <div class="login-register-component">
+            <div class="my-row" id="login-signUp-header" >
+                <div class="btn-group btn-group-justified" data-toggle="buttons">
+                    <label class="btn btn-primary focus active" id="login-tab" onclick="clearSignUpScreen()">
+                        <input type="radio" name="options"> Login
+                    </label>
+                    <label class="btn btn-primary" id="sign-up-tab" onclick= clearLoginScreen()>
+                        <input type="radio" name="options"> Sign up
+                    </label>
+                </div>
+            </div>
+            <div class="alert alert-warning hidden" id="error">
+            </div>
+
+            <!-- login div -->
+            <div id="login" class="input-div">
+                <input type="text" class="form-control" id="login-mail" placeholder="Enter email address *"/>
+                <input type="password" class="form-control" id="login-pwd" placeholder="Enter password *"/>
+                <div class="buttons">
+                    <button type="button" class="btn btn-success" id="login-button" onclick=userLogin()>Get started</button>
+                    <button type="button" class="btn btn-success" id="forgot-password" onclick=openForgotPasswordView()>Forgot password</button>
+                </div>
+                <label> -----Or----- </label>
+                <div class="buttons">
+                    <button type="button" class="btn btn-primary" id="login-google" onclick=userLoginGoogle()>Sign In With Google</button>
+                    <button type="button" class="btn btn-primary" id="login-facebook" onclick=userLoginFacebook()>Sign In with Facebook</button>
+                </div>
+            </div>
+
+            <!-- Sign up div-->
+            <div id="sign-up" class="hidden input-div">
+                <input type="text" class="form-control" id="sign-up-name" placeholder="Enter user name *"/>
+                <input type="text" class="form-control" id="sign-up-mail" placeholder="Enter email address *"/>
+                <input type="password" class="form-control" id="sign-up-pwd" placeholder="Enter password *"/>
+                <button type="button" class="btn btn-success" id="sign-up-button" onclick=userSignUp()>Sign up</button>
+            </div>
+
+            <!-- Forgot password div -->
+            <div id="forgot-password-div" class="hidden input-div">
+                <label>Please enter the e-mail to send password</label>
+                <div class="alert alert-warning hidden" id="error-forgot-password"></div>
+                <div class="alert alert-success hidden" id="success-forgot-password"></div>
+
+                <input type="text" class="form-control" id="reset-mail" placeholder="Enter email address *"/>
+
+                <div class="buttons">
+                    <button type="button" class="btn btn-success" id="login-back" onclick=openLoginView()> Back to
+                        login
+                    </button>
+                    <button type="button" class="btn btn-success" id="send-reset-mail" onclick=sendPasswordResetMail()>
+                        Send Reset Mail
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-</nav>
-<div class="login-register-container">
-    <div class="login-register-component">
-        <div class="my-row">
-            <div class="btn-group btn-group-justified" data-toggle="buttons">
-                <label class="btn btn-primary focus active" id="login-tab">
-                    <input type="radio" name="options"> Login
-                </label>
-                <label class="btn btn-primary" id="sign-up-tab">
-                    <input type="radio" name="options"> Sign up
-                </label>
-            </div>
-        </div>
-        <div class="alert alert-warning hidden" id="error">
-        </div>
-        <div id="login" class="input-div">
-            <input type="text" class="form-control" id="login-mail" placeholder="Enter email address *"/>
-            <input type="password" class="form-control" id="login-pwd" placeholder="Enter password *"/>
-            <div class="buttons">
-                <button type="button" class="btn btn-success" id="login-button">Get started</button>
-                <button type="button" class="btn btn-success" id="forgot-password">Forgot password</button>
-            </div>
-            <label> -----Or----- </label>
-            <div class="buttons">
-                <button type="button" class="btn btn-primary" id="login-google">Sign In With Google</button>
-                <button type="button" class="btn btn-primary" id="login-facebook">Sign In with Facebook</button>
-            </div>
-        </div>
-        <div id="sign-up" class="hidden input-div">
-            <input type="text" class="form-control" id="sign-up-name" placeholder="Enter user name *"/>
-            <input type="text" class="form-control" id="sign-up-mail" placeholder="Enter email address *"/>
-            <input type="password" class="form-control" id="sign-up-pwd" placeholder="Enter password *"/>
-            <button type="button" class="btn btn-success" id="sign-up-button">Sign up</button>
-        </div>
-    </div>
-</div>
-<!-- Footer -->
-<footer class="py-5 bg-dark">
-    <!-- /.container -->
-</footer>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+        <!-- /.container -->
+    </footer>
 </div>
 </body>
 </html>

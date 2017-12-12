@@ -1,4 +1,9 @@
-
+let googleProvider;
+let facebookProvider;
+$(document).ready(() => {
+     googleProvider = new firebase.auth.GoogleAuthProvider();
+     facebookProvider = new firebase.auth.FacebookAuthProvider();
+});
 const clearSignUpScreen = () => {
     $("#sign-up").addClass("hidden");
     $("#error").addClass("hidden");
@@ -16,7 +21,7 @@ const clearLoginScreen = () => {
     $("#sign-up").removeClass("hidden");
 };
 
-const addUserData = (id,name, email) => {
+const addUserData = (id, name, email) => {
     $.ajax({
         url: 'http://localhost:5000/addUser',
         data: {
@@ -26,102 +31,101 @@ const addUserData = (id,name, email) => {
         },
         dataType: 'text',
         type: 'POST',
-        success: function(data) {
+        success: function () {
             navigateToProductsPage(name);
         },
-        error: function() {
-            $("#error").removeClass("hidden");
-            $("#error").append("error occurred in adding user data");
+        error: function () {
+            $("#error").removeClass("hidden").append("error occurred in adding user data");
         },
     });
 };
 const navigateToProductsPage = (data) => {
-    var source = document.getElementById('entry-template').innerHTML;
-    var template = Handlebars.compile(source);
-    var html = template({data});
+    let source = document.getElementById('entry-template').innerHTML;
+    let template = Handlebars.compile(source);
+    let html = template({data});
     $('#products').html(html);
     $(".login-register-component").addClass("hidden");
 };
 
-$(document).ready(() =>{
-    var googleProvider = new firebase.auth.GoogleAuthProvider();
-    var facebookProvider = new firebase.auth.FacebookAuthProvider();
-    $("#login-tab").click(() =>{
-        clearSignUpScreen();
-    });
-    $("#sign-up-tab").click(() =>{
-       clearLoginScreen();
-    });
+const userLoginGoogle = () => {
+    googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+    firebase.auth().signInWithPopup(googleProvider).then(function (result) {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        // var token = result.credential.accessToken;
+        // The signed-in user info.
+        let user = result.user;
+        $("#error").addClass("hidden");
+        addUserData(user.uid, user.displayName, user.email);
 
-    $("#login-google").click(() =>{
-        googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-        firebase.auth().signInWithPopup(googleProvider).then(function(result) {
-            // This gives you a Google Access Token. You can use it to access the Google API.
-            var token = result.credential.accessToken;
-            // The signed-in user info.
-            var user = result.user;
-            $("#error").addClass("hidden");
-            addUserData(user.uid, user.displayName, user.email);
-
-        }).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // The email of the user's account used.
-            var email = error.email;
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential;
-            $("#error").removeClass("hidden");
-            $("#error").html(errorMessage);
-        });
+    }).catch(function (error) {
+        // Handle Errors here.
+        let errorMessage = error.message;
+        $("#error").removeClass("hidden").html(errorMessage);
     });
-    $("#login-facebook").click(() => {
-        firebase.auth().signInWithPopup(facebookProvider).then(function(result) {
-            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-            var token = result.credential.accessToken;
-            // The signed-in user info.
-            var user = result.user;
-            $("#error").addClass("hidden");
-            addUserData(user.uid, user.displayName, user.email);
-        }).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // The email of the user's account used.
-            var email = error.email;
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential;
-            $("#error").removeClass("hidden");
-            $("#error").html(errorMessage);
-        });
-    });
-    $("#login-button").click(() =>{
-        firebase.auth().signInWithEmailAndPassword($("#login-mail").val(), $("#login-pwd").val()).then(function(user) {
-            var user = firebase.auth().currentUser;
-            $("#error").addClass("hidden");
-            navigateToProductsPage(user.email);
-        }, function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            $("#error").removeClass("hidden");
-            $("#error").html(errorMessage);
-        });
+};
 
-
+const userLoginFacebook = () => {
+    firebase.auth().signInWithPopup(facebookProvider).then(function (result) {
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        //let token = result.credential.accessToken;
+        // The signed-in user info.
+        let user = result.user;
+        $("#error").addClass("hidden");
+        addUserData(user.uid, user.displayName, user.email);
+    }).catch(function (error) {
+        // Handle Errors here.
+        let errorMessage = error.message;
+        $("#error").removeClass("hidden").html(errorMessage);
     });
+};
 
-    $("#sign-up-button").click(() =>{
-        firebase.auth().createUserWithEmailAndPassword($("#sign-up-mail").val(), $("#sign-up-pwd").val()).then(function(user) {
-            var user = firebase.auth().currentUser;
-            $("#error").addClass("hidden");
-            addUserData(user.uid, $("#sign-up-name").val(), user.email)
-        }, function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            $("#error").removeClass("hidden");
-            $("#error").html(errorMessage);
-        });
+const userLogin = () => {
+    firebase.auth().signInWithEmailAndPassword($("#login-mail").val(), $("#login-pwd").val()).then(function () {
+        let user = firebase.auth().currentUser;
+        $("#error").addClass("hidden");
+        navigateToProductsPage(user.email);
+    }, function (error) {
+        let errorMessage = error.message;
+        $("#error").removeClass("hidden").html(errorMessage);
+       // $("#error").html(errorMessage);
     });
-});
+};
+
+const userSignUp = () => {
+    firebase.auth().createUserWithEmailAndPassword($("#sign-up-mail").val(), $("#sign-up-pwd").val()).then(function (user) {
+        let user = firebase.auth().currentUser;
+        $("#error").addClass("hidden");
+        addUserData(user.uid, $("#sign-up-name").val(), user.email)
+    }, function (error) {
+        let errorMessage = error.message;
+        $("#error").removeClass("hidden").html(errorMessage);
+    });
+};
+
+const openForgotPasswordView = () => {
+    $("#login-signUp-header").addClass("hidden");
+    $("#login").addClass("hidden");
+    $("#forgot-password-div").removeClass("hidden");
+    $("#error").addClass("hidden");
+};
+
+const openLoginView = () => {
+    $("#reset-mail").val("");
+    $("#login-signUp-header").removeClass("hidden");
+    $("#login").removeClass("hidden");
+    $("#error-forgot-password").addClass("hidden");
+    $("#success-forgot-password").addClass("hidden");
+    $("#forgot-password-div").addClass("hidden");
+ };
+
+const sendPasswordResetMail = () => {
+    firebase.auth().sendPasswordResetEmail($("#reset-mail").val()).then(function() {
+        $('#error-forgot-password').addClass("hidden");
+        $('#success-forgot-password').removeClass("hidden").html("Reset link sent to your e-mail successfully");
+
+    }, function(error) {
+        // An error happened.
+        let message = error.message;
+        $("#error-forgot-password").removeClass("hidden").html(error.message);
+    });
+};
