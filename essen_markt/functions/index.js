@@ -18,6 +18,10 @@ app.post('/addUser', (request, response) => {
     });
     response.send("ok");
 });
+app.post('/addProduct', (request, response) => {
+    firebase.database().ref('/products/').push(request.body);
+    response.send("ok");
+});
 const firebaseApp= firebase.initializeApp(
     functions.config().firebase
 );

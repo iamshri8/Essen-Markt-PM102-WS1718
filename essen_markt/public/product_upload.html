@@ -14,7 +14,23 @@
       <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
 
     <!-- Custom styles for this template -->
-    <link href="css/shop-item.css" rel="stylesheet">
+    <link href="css/shop-item.less" rel="stylesheet/less">
+
+      <!-- Bootstrap core JavaScript -->
+      <script src="lib/jquery/dist/jquery.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+      <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+      <script src="lib/less/dist/less.js" type="text/javascript"></script>
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCj7BOeibRGfOb__jtFjRqjj-7mpN8Avkc&sensor=false"
+              type="text/javascript"></script>
+      <script src="js/product_upload.js" type="text/javascript"></script>
+      <!-- Firebase -->
+      <script src="/__/firebase/4.5.1/firebase-app.js"></script>
+
+      <!-- Firebase features-->
+      <script defer src="/__/firebase/4.5.1/firebase-storage.js"></script>
+      <!-- initialize the SDK after all desired features are loaded -->
+      <script defer src="/__/firebase/init.js"></script>
 
   </head>
 
@@ -56,8 +72,8 @@
         <div class="col-lg-3">
           <h1 class="my-4">Essen</h1>
           <div class="list-group">
-            <a href="#" class="list-group-item active">Restuarant</a>
-            <a href="#" class="list-group-item">Individual</a>
+            <a href="#" id="restaurant" class="list-group-item active" onclick=showRestaurantUpload()>Restaurant</a>
+            <a href="#" id="individual" class="list-group-item" onclick=showIndividualUpload()>Individual</a>
            
           </div>
         </div>
@@ -65,79 +81,116 @@
 
         <div class="col-lg-9">
 
-          
           <!-- /.card -->
 
           <div class="card card-outline-secondary my-4">
             <div class="card-header">
-              Product Reviews
+              Product Details
             </div>
             <div class="card-body">
               <p>
-			  
-				<form>
+                <form>
+                  <div class="item-detail">
+                        <div class="form-group item-name">
+                            <label>Name of the Item</label>
+                            <input type="text" class="form-control" id="item-name" aria-describedby="emailHelp"
+                                   placeholder="Enter Item name">
+                        </div>
+
+                        <div class="form-group category">
+                            <label>Category</label>
+                            <div class="dropdown" data-dropup-auto="false">
+                                <button class="btn btn-primary dropdown-toggle" id="category" type="button" data-toggle="dropdown">
+                                    Select Category
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu" data-dropup-auto="false">
+                                    <li><a href="#">Desserts</a></li>
+                                    <li><a href="#">Chocolates</a></li>
+                                    <li><a href="#">Italian</a></li>
+                                    <li><a href="#">Pizza</a></li>
+                                    <li><a href="#">Drinks</a></li>
+                                    <li><a href="#">Snacks</a></li>
+                                    <li><a href="#">Others</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Product Description</label>
+                        <textarea class="form-control" id="product-description" rows="3"></textarea>
+                    </div>
+                <div class="form-group show-individual">
+                    <label class="radio-inline active"><input type="radio" name="optradio" checked="">Donate as individual</label>
+                    <label class="radio-inline"><input type="radio" name="optradio" onclick=showDonateToRestaurantFields()>Donate to a restaurant</label>
+                </div>
 				  <div class="form-group">
-					<label for="exampleInputEmail1">Name of the Item</label>
-					<input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-					<small id="emailHelp" class="form-text text-muted">Supply the name of the item or ingridents</small>
+					<label>Owner Name</label>
+					<input type="text" class="form-control" id="owner-name" aria-describedby="emailHelp" placeholder="Enter Owner Name">
 				  </div>
+                <div class="form-group" id="restaurant-name-div">
+                    <label>Restaurant Name</label>
+                    <input type="text" class="form-control" id="restaurant-name" aria-describedby="emailHelp" placeholder="Enter Restaurant Name">
+                </div>
+                <div class="item-detail">
+                    <div class="form-group">
+                        <label>Contact No</label>
+                        <input type="text" class="form-control" id="contact-number" aria-describedby="contact"
+                               placeholder="Supply the contact number">
+                    </div>
+                    <div class="form-group">
+                        <label>email</label>
+                        <input type="text" class="form-control" id="email" aria-describedby="contact"
+                               placeholder="Supply the contact number">
+                    </div>
+                </div>
+                <div class="item-detail">
+                <div class="form-group">
+                    <label>Select pick up address</label>
+                    <div id="myMap"></div>
+                </div>
+                </div>
+                <div class="item-detail">
+                    <div class="form-group pick-up">
+                        <label>Pick-up timings</label>
+                        <input type="text" class="form-control" id="pick-up-timing" aria-describedby="contact"
+                               placeholder="eg: Tuesdays evenings only">
+                    </div>
+                    <div class="form-group item-listing-time category">
+                        <label>Keep Item listed for </label>
+                        <div class="dropdown" data-dropup-auto="false">
+                            <button class="btn btn-primary dropdown-toggle" id="list-time" type="button" data-toggle="dropdown">
+                                --Select--
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu" data-dropup-auto="false">
+                                <li><a href="#">1 day</a></li>
+                                <li><a href="#">2 days</a></li>
+                                <li><a href="#">3 days</a></li>
+                                <li><a href="#">4 days</a></li>
+                                <li><a href="#">5 days</a></li>
+                                <li><a href="#">6 days</a></li>
+                                <li><a href="#">7 days</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 				  <div class="form-group">
-					<label for="exampleInputEmail1">Owner Name</label>
-					<input type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Owner Name">
-					<small id="name1" class="form-text text-muted">Supply the name of the item or ingridents</small>
-				  </div>
-				  
-				  <div class="form-group">
-					<label for="exampleInputEmail1">Contact No</label>
-					<input type="text" class="form-control" id="contact" aria-describedby="contact" placeholder="Supply the contact number">
-					<small id="contact1" class="form-text text-muted">Supply the contact number</small>
-				  </div>
-				 <div class="form-group">
-					<label for="exampleSelect2">Location</label>
-					<select multiple class="form-control" id="exampleSelect2">
-					  <option>Germany</option>
-					  <option>Spain</option>
-					  <option>UK</option>
-					  <option>Belgium</option>
-					  <option>Lagos</option>
-					</select>
-				  </div>
-				  <div class="form-group">
-					<label for="exampleTextarea">Product Description</label>
-					<textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
-				  </div>
-				  <div class="form-group">
-					<label for="exampleInputFile">Upload image</label>
-					<input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+					<label>Upload image</label>
+					<input type="file" class="form-control-file" id="item-image" aria-describedby="fileHelp">
 					<small id="fileHelp" class="form-text text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>
 				  </div>
-				  
-				  <div class="form-check">
-					<label class="form-check-label">
-					  <input type="checkbox" class="form-check-input">
-					  Check me out
-					</label>
-				  </div>
-				  
 				</form>
-				<button type="submit" class="btn btn-primary">Donate</button>  
-				<a href="#" class="btn btn-success">Save</a>
+				<button type="submit" onclick=uploadProductDetails() class="btn btn-primary">Donate</button>
 				<a href="#" class="btn btn-info">Cancel</a>
 			</p>
-              
-              
             </div>
           </div>
           <!-- /.card -->
 
         </div>
         <!-- /.col-lg-9 -->
-
       </div>
-
     </div>
     <!-- /.container -->
-
     <!-- Footer -->
     <footer class="py-5 bg-dark">
       <div class="container">
@@ -145,12 +198,5 @@
       </div>
       <!-- /.container -->
     </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="lib/jquery/dist/jquery.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
-
   </body>
-
 </html>

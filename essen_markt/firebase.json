@@ -8,7 +8,7 @@
     ],
     "rewrites": [
       {
-        "source": "/addUser",
+        "source": "/addProduct",
         "function":"app"
       }
     ]
