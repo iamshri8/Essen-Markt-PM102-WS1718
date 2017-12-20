@@ -8,8 +8,41 @@ $(document).ready(() => {
         $(this).parent().parent().siblings(".btn:first-child").val($(this).text());
     });
 
-    getCurrentLocation();
-});
+    
+
+    
+        $('#register-form').validate({
+          // Specify validation rules
+          rules: {
+            'itemName': "required",  
+            'ownerName': "required",
+            'restaurantName': "required",
+            'providerName':"required",
+            'contactNumber':'required',
+            'pickUpTiming' :'required',
+            //'email':'required',
+            'email': { required: true,
+                email: true,
+                accept:"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}" },
+            'essenCatagery':'required',   
+          },
+          // Specify validation error messages
+          messages: {
+            'itemName': "Please enter your Item Name",
+            'ownerName': "Please enter your firstname",
+            'providerName': "Please enter providerName",
+            'contactNumber':"Please enter your Number",
+            'email':"Please enter your Valid Mail",
+            'restaurantName':"Please enter your restaurant name",
+            'pickUpTiming' : "Please enter the Pick Up Timing"
+          },
+          
+          submitHandler: function(form) {
+            uploadProductDetails();
+          }
+        });
+
+
 const getCurrentLocation = () => {
     let x = navigator.geolocation;
     x.getCurrentPosition(success, failure);
@@ -97,11 +130,18 @@ const uploadProductDetails = () => {
             storage.child('images/' + item.id).put(image);
 
         },
+        
         error: function () {
             $("#error").removeClass("hidden").append("error occurred in adding user data");
         },
     });
 };
+
+
+getCurrentLocation();
+
+
+});
 const showIndividualUpload = () => {
     $("#restaurant-name-div").addClass("hidden");
     $("#restaurant").removeClass("active");
@@ -118,3 +158,5 @@ const showRestaurantUpload = () => {
 const showDonateToRestaurantFields= () => {
     
 };
+
+
