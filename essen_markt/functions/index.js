@@ -19,7 +19,15 @@ app.post('/addUser', (request, response) => {
     response.send("ok");
 });
 app.post('/addProduct', (request, response) => {
-    firebase.database().ref('/products/').push(request.body);
+    // firebase.database().ref('/products/').push(request.body);
+    // response.send("ok");
+    let productsRef= firebase.database().ref('/products').child('address');
+    productsRef.orderByChild('city').equalTo('Kiel').once('value', function (snap)  {
+        console.log(snap.val());
+    });
+});
+app.post('/registerRestaurant', (request, response) => {
+    firebase.database().ref('/registeredRestaurants/').push(request.body);
     response.send("ok");
 });
 const firebaseApp= firebase.initializeApp(
