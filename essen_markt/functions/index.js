@@ -1,37 +1,60 @@
-const functions = require('firebase-functions');
 const firebase= require('firebase-admin');
 const express = require('express');
-const app = express();
+const bodyParser = require('body-parser');
+var cors = require('cors');
+var app	= express();
+var server= require('http').createServer(app);
+var io= require('socket.io').listen(server);
 
-app.get('/getProducts',(request, response) => {
-    const ref= firebaseApp.database().ref('/products');
-    ref.on('value', snap => {
-        console.log(snap.val());
-        response.send(snap.val());
-    });
+server.listen(5000,function () {
+    console.log('Express server listening on port 5000');
 });
-app.post('/addUser', (request, response) => {
-    console.log(request.body.id+ request.body.name+ request.body.mail);
-    firebase.database().ref('/users/'+ request.body.id).set({
-        name: request.body.name,
-        email: request.body.mail
-    });
-    response.send("ok");
-});
-app.post('/addProduct', (request, response) => {
-    // firebase.database().ref('/products/').push(request.body);
-    // response.send("ok");
-    let productsRef= firebase.database().ref('/products').child('address');
-    productsRef.orderByChild('city').equalTo('Kiel').once('value', function (snap)  {
-        console.log(snap.val());
-    });
-});
-app.post('/registerRestaurant', (request, response) => {
-    firebase.database().ref('/registeredRestaurants/').push(request.body);
-    response.send("ok");
-});
+app.use(cors());
+
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
 const firebaseApp= firebase.initializeApp(
-    functions.config().firebase
+    {
+        credential: firebase.credential.applicationDefault(),
+        databaseURL: "https://foodmarkt-8a675.firebaseio.com"
+    }
 );
+var post = require('./app/requests')(app, firebaseApp);// added to handle requests from client
 
-exports.app = functions.https.onRequest(app);
+var userIds= {};
+
+io.sockets.on('connection', function (socket) {
+
+    socket.on('addUser', function(data  ){
+        console.log("adds");
+        //Add socket details of the user
+        socket.userId= data;
+        // store the details of all the connected users
+        userIds[data]= socket;
+        console.log(data);
+    });
+    socket.on('sendChat', function (data, callback) {
+        if( data.receiverId in userIds){
+            //if receiver is online or connected
+            callback(true);
+            //send the chat data to both sender and the receiver
+            userIds[data.receiverId].emit('updateChat', {id: socket.userId, msg: data.msg});
+            userIds[data.senderId].emit('updateChat', {id: socket.userId, msg: data.msg});
+
+        }else {
+            //if receiver is not online or connected
+            callback(false);
+            console.log("no receiver");
+        }
+    });
+
+    socket.on('disconnect', function () {
+        if(!socket.userId) return;
+        delete userIds[socket.userId];
+        console.log(Object.keys(userIds));
+    });
+});

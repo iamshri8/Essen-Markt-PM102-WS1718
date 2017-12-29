@@ -15,14 +15,17 @@
     <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <!-- Firebase -->
-    <script src="/__/firebase/4.5.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
 
-    <!-- Firebase features-->
-    <script defer src="/__/firebase/4.5.1/firebase-auth.js"></script>
-    <script defer src="/__/firebase/4.5.1/firebase-database.js"></script>
-
-    <!-- initialize the SDK after all desired features are loaded -->
-    <script defer src="/__/firebase/init.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyBfUt1enRBrCxJjxyXTceRJZdiozSaxLtU",
+            authDomain: "foodmarkt-8a675.firebaseapp.com",
+            storageBucket: "foodmarkt-8a675.appspot.com",
+        };
+        firebase.initializeApp(config);
+    </script>
     <script src="lib/less/dist/less.js" type="text/javascript"></script>
     <script type="text/javascript" src="lib/handlebars/handlebars.js"></script>
     <script src="js/index.js" type="text/javascript"></script>
@@ -58,8 +61,8 @@
 
             <!-- login div -->
             <div id="login" class="input-div">
-                <input type="text" class="form-control" id="login-mail" placeholder="Enter email address *"/>
-                <input type="password" class="form-control" id="login-pwd" placeholder="Enter password *"/>
+                <input type="text" class="form-control" id="login-mail" placeholder="Enter email address *" required/>
+                <input type="password" class="form-control" id="login-pwd" placeholder="Enter password *" required/>
                 <div class="buttons">
                     <button type="button" class="btn btn-success" id="login-button" onclick=userLogin()>Get started</button>
                     <button type="button" class="btn btn-success" id="forgot-password" onclick=openForgotPasswordView()>Forgot password</button>

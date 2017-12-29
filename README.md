@@ -1,8 +1,8 @@
 ESSEN MARKT
 
 Execution steps:
- 1. Navigate to essen_markt folder
-        cd essen_markt
+ 1. Navigate to functions folder
+        cd essen_markt/functions
 
- 2. Execute the following command to run in local
-        firebase serve --only functions,hosting
+ 2. Execute the following command to start server
+        npm start

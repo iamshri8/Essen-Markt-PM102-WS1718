@@ -40,11 +40,7 @@ const addUserData = (id, name, email) => {
     });
 };
 const navigateToProductsPage = (data) => {
-    // let source = document.getElementById('entry-template').innerHTML;
-    // let template = Handlebars.compile(source);
-    // let html = template({data});
-    // $('#products').html(html);
-    // $(".login-register-component").addClass("hidden");
+
     var queryString = "?user=" + data;
     window.location.href = "product_upload.html" + queryString;
 };
