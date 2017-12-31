@@ -1,10 +1,18 @@
-.content-container {
-    height :550px;
 
+.main-header{
+  width: 100%;
+  height : 10%;
+}
+
+.main-footer {
+  width : 100%;
+  height : 5%;
+  position: absolute;
+  bottom: 0;
 }
 .filters {
     background-color: #CCCCFF;
-    margin: 30px 5px 5px 5px;
+    margin: 40px 5px 5px 5px;
     padding: 5px 5px 5px 15px;
     border-radius: 5px;
 
@@ -24,13 +32,18 @@
         display: flex;
         flex-direction: column;
 
-
+        label {
+            margin : 0px;
+        }
     }
 }
 
 
 
 .product-container{
+
+    padding :5px 5px 5px 5px;
+
     .product {
         width: 600px;
         height: 250px;
@@ -40,29 +53,52 @@
     }
 
 
-    .item-des{
-       // border-bottom-color: black;
-        border-bottom-style: outset;
-        flex: 0 0 50%;
-        display: flex;
+  .item-des{
+    // border-bottom-color: black;
+    border-bottom-style: ridge;
+    flex: 0 0 50%;
+    display: flex;
+    .image {
+      width: 200px;
+      height: 125px;
+      display: flex;
+      flex-direction: column;
+      background-color: dimgrey;
+    }
+    .item-content {
 
-        }
+      //text-align: center;
+      margin: left;
+      padding : 10px 10px 10px 10px;
+
+    }
+
+  }
     .owner-des{
         //border-bottom-color: black;
-        border-bottom-style: outset;
+       //border-bottom-style: ridge;
         flex: 0 0 35%;
         display: flex;
+      flex-direction: column;
+      margin: left;
+      padding : 10px 10px 10px 10px;
     }
     .owner-contact{
         flex: 0 0 15%;
         display: flex;
 
-        label{
-
+        .call{
+            border: 1px solid grey;
             display: flex;
             flex: 1 1 0;
             justify-content: center;
+
+        }
+        .chat{
+          border: 1px solid grey;
+          display: flex;
+          flex: 1 1 0;
+          justify-content: center;
         }
     }
 }
-
