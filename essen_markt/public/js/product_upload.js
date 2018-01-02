@@ -34,12 +34,9 @@ $(document).ready(() => {
             $('#datasend').focus().click();
         }
     });
+    $("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
     $('#chat-container').addClass('hidden');
     $('.show-individual').addClass("hidden");
-    $(".dropdown-menu").on('click', 'li a', function () {
-        $(this).parent().parent().siblings(".btn:first-child").html($(this).text() + ' <span class="caret"></span>');
-        $(this).parent().parent().siblings(".btn:first-child").val($(this).text());
-    });
 
     $('a.nav-link.link').attr("href", (n,v) =>{
         return v+"?user="+userId;
@@ -111,7 +108,7 @@ const showAddressOnMarker = (position, map, marker) => {
     });
 };
 const uploadProductDetails = () => {
-    let image = $("#item-image")[0].files[0];
+    let image = $(".item-image")[0].files[0];
     let storage = firebase.storage().ref();
     let item = {
         id: Date.now(),
@@ -122,15 +119,11 @@ const uploadProductDetails = () => {
         restaurantName: $("#restaurant-name").val(),
         contactNumber: $("#contact-number").val(),
         email: $("#email").val(),
-        address: {
-            fullAddress: userAddress,
-            city: userCity,
-            zip: userZipCode
-        },
+        address: userAddress,
+        city: userCity.toLowerCase(),
         pickupTime: $("#pick-up-timing").val(),
         listTime: $("#list-time").val()
     };
-    if (validateForm(item)) {
         $.ajax({
             url: 'http://localhost:5000/addProduct',
             data: item,
@@ -146,7 +139,6 @@ const uploadProductDetails = () => {
                 $("#error").removeClass("hidden").append("error occurred in adding user data");
             },
         });
-    }
 };
 
 const getRegisteredRestaurants = () => {
@@ -184,6 +176,7 @@ const showRestaurantUpload = () => {
     $("#restaurant").addClass("active");
     $("#individual").removeClass("active");
     $('.show-individual').addClass("hidden");
+    showDonateAsIndividual();
     clearFormValues();
 };
 const showDonateToRestaurantFields= () => {
@@ -192,6 +185,10 @@ const showDonateToRestaurantFields= () => {
     if(registeredRestaurants === null || registeredRestaurants === undefined) {
         getRegisteredRestaurants();
     }
+};
+const showDonateAsIndividual= () => {
+    $(".individual").removeClass('hidden');
+    $(".donate-to-restaurant").addClass('hidden');
 };
 
 const clearFormValues = () => {
@@ -233,6 +230,7 @@ const validateForm = (item ) => {
         || item.pickupTime === '' || item.listTime === '') {
         $('#error').removeClass('hidden').html("please fill in all the mandatory fields");
         return false;
+
     }
     if( !(/^\d+$/.test(item.contactNumber))) {
         $('#error').removeClass('hidden').html("please enter valid contact number");

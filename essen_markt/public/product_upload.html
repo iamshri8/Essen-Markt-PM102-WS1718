@@ -26,6 +26,7 @@
             crossorigin="anonymous"></script>
     <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="lib/handlebars/handlebars.js"></script>
+    <script src="lib/jqBootstrapValidation.js"></script>
     <script src="lib/less/dist/less.js" type="text/javascript"></script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCj7BOeibRGfOb__jtFjRqjj-7mpN8Avkc&sensor=false"
@@ -104,134 +105,137 @@
                 </div>
                 <div class="card-body">
                     <p>
-                    <div class="form-group item-name">
-                        <div class="alert alert-warning hidden" id="error">
-                        </div>
-                    </div>
-                    <div class="item-detail">
+                    <form id="product_upload">
                         <div class="form-group item-name">
-                            <label>Name of the Item</label>
-                            <input type="text" class="form-control" id="item-name" name="itemName"
-                                   aria-describedby="emailHelp"
-                                   placeholder="Enter Item name">
+                            <div class="alert alert-warning hidden" id="error">
+                            </div>
                         </div>
+                        <div class="item-detail">
+                            <div class="form-group item-name">
+                                <label>Name of the Item *</label>
+                                <input type="text" class="form-control" id="item-name" name="itemName"
+                                       aria-describedby="emailHelp"
+                                       placeholder="Enter Item name"
+                                       required>
+                            </div>
 
-                        <div class="form-group category">
-                            <label>Category</label>
-                            <div class="dropdown" data-dropup-auto="false">
-                                <button class="btn btn-primary dropdown-toggle" id="category" type="button"
-                                        data-toggle="dropdown">
-                                    Select Category
-                                    <span class="caret"></span></button>
-                                <ul class="dropdown-menu" data-dropup-auto="false">
-                                    <li><a href="#">Desserts</a></li>
-                                    <li><a href="#">Chocolates</a></li>
-                                    <li><a href="#">Italian</a></li>
-                                    <li><a href="#">Pizza</a></li>
-                                    <li><a href="#">Drinks</a></li>
-                                    <li><a href="#">Snacks</a></li>
-                                    <li><a href="#">Others</a></li>
-                                </ul>
+                            <div class="form-group category">
+                                <label for="category">Category *</label>
+                                <select class="form-control options" id="category" required>
+                                    <option value="">--select--</option>
+                                    <option value="Chocolates">Chocolates</option>
+                                    <option value="Desserts">Desserts</option>
+                                    <option value="Italian">Italian</option>
+                                    <option value="Pizza">Pizza</option>
+                                    <option value="Drinks">Drinks</option>
+                                    <option value="Snacks">Snacks</option>
+                                    <option value="Others">Others</option>
+                                </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Product Description</label>
-                        <textarea class="form-control" id="product-description" rows="3"></textarea>
-                    </div>
-                    <div class="form-group show-individual">
-                        <label class="radio-inline active"><input type="radio" name="optradio" checked="">Donate as
-                            individual</label>
-                        <label class="radio-inline"><input type="radio" name="optradio"
-                                                           onclick=showDonateToRestaurantFields()>Donate to a restaurant</label>
-                    </div>
-                    <div class="individual">
                         <div class="form-group">
-                            <label>Owner Name</label>
-                            <input type="text" class="form-control" id="owner-name" name="ownerName"
-                                   aria-describedby="ownerName" placeholder="Enter Owner Name">
+                            <label>Product Description</label>
+                            <textarea class="form-control" id="product-description" rows="3"></textarea>
                         </div>
-                        <div class="form-group" id="restaurant-name-div">
-                            <label>Restaurant Name</label>
-                            <input type="text" class="form-control" id="restaurant-name" name="restaurantName"
-                                   aria-describedby="restaurantName" placeholder="Enter Restaurant Name">
+                        <div class="form-group show-individual">
+                            <label class="radio-inline active">
+                                <input type="radio"
+                                       name="optradio"
+                                       checked=""
+                                       onclick=showDonateAsIndividual()>
+                                Donate as individual
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio"
+                                       name="optradio"
+                                       onclick=showDonateToRestaurantFields()>
+                                Donate to a restaurant
+                            </label>
                         </div>
-                        <div class="item-detail">
+                        <div class="individual">
                             <div class="form-group">
-                                <label>Contact No</label>
-                                <input type="text" class="form-control" id="contact-number" name="contactNumber"
-                                       aria-describedby="contact"
-                                       placeholder="Supply the contact number">
+                                <label>Owner Name  *</label>
+                                <input type="text" class="form-control" id="owner-name"
+                                       placeholder="Enter Owner Name" required>
                             </div>
-                            <div class="form-group">
-                                <label>email</label>
-                                <input type="email" class="form-control" id="email" name="email"
-                                       aria-describedby="email"
-                                       placeholder="Supply the email">
+                            <div class="form-group" id="restaurant-name-div">
+                                <label>Restaurant Name *</label>
+                                <input type="text" class="form-control" id="restaurant-name"
+                                        placeholder="Enter Restaurant Name" required>
                             </div>
-                        </div>
-                        <div class="item-detail">
-                            <div class="form-group">
-                                <label>Select pick up address</label>
-                                <div id="myMap"></div>
-                            </div>
-                        </div>
-                        <div class="item-detail">
-                            <div class="form-group pick-up">
-                                <label>Pick-up timings</label>
-                                <input type="text" class="form-control" id="pick-up-timing" name="pickUpTiming"
-                                       aria-describedby="contact"
-                                       placeholder="eg: Tuesdays evenings only">
-                            </div>
-                            <div class="form-group item-listing-time category">
-                                <label>Keep Item listed for </label>
-                                <div class="dropdown" data-dropup-auto="false">
-                                    <button class="btn btn-primary dropdown-toggle" id="list-time" type="button"
-                                            data-toggle="dropdown">
-                                        --Select--
-                                        <span class="caret"></span></button>
-                                    <ul class="dropdown-menu" data-dropup-auto="false">
-                                        <li><a href="#">1 day</a></li>
-                                        <li><a href="#">2 days</a></li>
-                                        <li><a href="#">3 days</a></li>
-                                        <li><a href="#">4 days</a></li>
-                                        <li><a href="#">5 days</a></li>
-                                        <li><a href="#">6 days</a></li>
-                                        <li><a href="#">7 days</a></li>
-                                    </ul>
+                            <div class="item-detail">
+                                <div class="form-group">
+                                    <label>Contact No *</label>
+                                    <input type="number" class="form-control" id="contact-number"
+                                           placeholder="Supply the contact number" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>email *</label>
+                                    <input type="email" class="form-control" id="email"
+                                           placeholder="Supply the email" required>
                                 </div>
                             </div>
+                            <div class="item-detail">
+                                <div class="form-group">
+                                    <label>Select pick up address *</label>
+                                    <div id="myMap"></div>
+                                </div>
+                            </div>
+                            <div class="item-detail">
+                                <div class="form-group pick-up">
+                                    <label>Pick-up timings *</label>
+                                    <input type="text" class="form-control" id="pick-up-timing" name="pickUpTiming"
+                                           aria-describedby="contact"
+                                           placeholder="eg: Tuesdays evenings only"
+                                            required>
+                                </div>
+                                <div class="form-group item-listing-time category">
+                                    <label for="list-time">Keep Item listed for *</label>
+                                    <select class="form-control options" id="list-time" required>
+                                        <option value="">--select--</option>
+                                        <option value="1">1 day</option>
+                                        <option value="2">2 days</option>
+                                        <option value="3">3 days</option>
+                                        <option value="4">4 days</option>
+                                        <option value="5">5 days</option>
+                                        <option value="6">6 days</option>
+                                        <option value="7">7 days</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Upload image</label>
+                                <input type="file" class="form-control-file item-image" aria-describedby="fileHelp">
+                            </div>
+                            <input type="submit" value="donate" onclick=uploadProductDetails()>
                         </div>
-                    </div>
-                    <div class="donate-to-restaurant">
+                        <div class="donate-to-restaurant">
                             <div class="form-group">
                                 <label for="sel2">Select Restaurant:</label>
                                 <script id="entry-template" type="text/x-handlebars-template">
                                     {{#each data}}
-                                    <option id={{this.email}}>{{this.restaurantName}}</option>\
+                                    <option id={{this.email}}>{{this.restaurantName}}</option>
                                     {{/each}}
                                 </script>
-                                <select multiple class="form-control options" id="sel2">
+                                <select multiple class="form-control options" id="sel2" required>
+
                                 </select>
                             </div>
-                        <div class="form-group">
-                            <label> Selected Restaurant address</label>
-                            <input type="text" class="form-control" id="selected-restaurant-address" disabled>
+                            <div class="form-group">
+                                <label> Selected Restaurant address</label>
+                                <input type="text" class="form-control" id="selected-restaurant-address" disabled required>
+                            </div>
+                            <div class="form-group">
+                                <label>Upload image</label>
+                                <input type="file" class="form-control-file item-image" aria-describedby="fileHelp">
+                            </div>
+                            <input type="submit" value="donate">
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Upload image</label>
-                        <input type="file" class="form-control-file" id="item-image" aria-describedby="fileHelp">
-                    </div>
-                    <button class="btn btn-primary" onclick=uploadProductDetails()>Donate</button>
-                    <button class="btn btn-primary" onclick=showChatBox()>chat</button>
-
-
+                        <button class="btn btn-primary" onclick=showChatBox()>chat</button>
+                    </form>
                 </div>
             </div>
             <!-- /.card -->
-
         </div>
         <!-- /.col-lg-9 -->
     </div>
@@ -244,8 +248,10 @@
                 <div class="col-md-12 chat-room">
                     <div class="col-md-8">
                         <div id="conversation" class="chat-box"></div>
-                        <input id="data" class="form-control" value="" ng-model="txtchat" required style="float: left;width:40%" >
-                        <input type="button" class="btn btn-danger" id="datasend" value="send" style="margin-left: 20px;"/>
+                        <input id="data" class="form-control" value="" ng-model="txtchat" required
+                               style="float: left;width:40%">
+                        <input type="button" class="btn btn-danger" id="datasend" value="send"
+                               style="margin-left: 20px;"/>
                     </div>
                 </div>
             </form>
