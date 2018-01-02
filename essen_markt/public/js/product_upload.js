@@ -5,7 +5,7 @@ let userId= getQueryVariable("user");
 let registeredRestaurants;
 let user;
 let socketReceiver='lsfoZnaxG5c0sN8XEGlc50W1Cdz2';
-let donateAsIn
+let donateAsIndividual=true;
 var socket = io.connect('http://localhost:5000/');
 
 
@@ -161,6 +161,7 @@ const showRestaurantUpload = () => {
     showDonateAsIndividual();
 };
 const showDonateToRestaurantFields= () => {
+    donateAsIndividual=false;
     $(".individual").addClass('hidden');
     $(".donate-to-restaurant").removeClass('hidden');
     if(registeredRestaurants === null || registeredRestaurants === undefined) {
@@ -168,6 +169,7 @@ const showDonateToRestaurantFields= () => {
     }
 };
 const showDonateAsIndividual= () => {
+    donateAsIndividual=true;
     $(".individual").removeClass('hidden');
     $(".donate-to-restaurant").addClass('hidden');
 };
