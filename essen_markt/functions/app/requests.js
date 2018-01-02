@@ -7,6 +7,14 @@ module.exports = function(app, firebaseApp) {
             response.send(snap.val());
         });
     });
+    app.get('/getUserDetails/:uid',(request, response) => {
+        console.log("details:"+ request.params.uid);
+        const ref= firebaseApp.database().ref('/users').child(request.params.uid);
+        ref.on('value', snap => {
+            console.log(snap.val());
+            response.send(snap.val());
+        });
+    });
 
     app.post('/addProduct', (request, response) => {
         firebaseApp.database().ref('/products/').push(request.body);

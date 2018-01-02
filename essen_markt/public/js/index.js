@@ -32,7 +32,7 @@ const addUserData = (id, name, email) => {
         dataType: 'text',
         type: 'POST',
         success: function () {
-            navigateToProductsPage(email);
+            navigateToProductsPage(id);
         },
         error: function () {
             $("#error").removeClass("hidden").append("error occurred in adding user data");
@@ -81,7 +81,7 @@ const userLogin = () => {
     firebase.auth().signInWithEmailAndPassword($("#login-mail").val(), $("#login-pwd").val()).then(function () {
         let user = firebase.auth().currentUser;
         $("#error").addClass("hidden");
-        navigateToProductsPage(user.email);
+        navigateToProductsPage(user.uid);
     }, function (error) {
         let errorMessage = error.message;
         $("#error").removeClass("hidden").html(errorMessage);
@@ -90,7 +90,7 @@ const userLogin = () => {
 };
 
 const userSignUp = () => {
-    firebase.auth().createUserWithEmailAndPassword($("#sign-up-mail").val(), $("#sign-up-pwd").val()).then(function (user) {
+    firebase.auth().createUserWithEmailAndPassword($("#sign-up-mail").val(), $("#sign-up-pwd").val()).then(function () {
         let user = firebase.auth().currentUser;
         $("#error").addClass("hidden");
         addUserData(user.uid, $("#sign-up-name").val(), user.email)
