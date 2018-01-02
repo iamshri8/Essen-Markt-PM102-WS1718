@@ -10,3 +10,60 @@ function getQueryVariable(variable) {
 
     return undefined;
 }
+const getCurrentLocation = () => {
+    let x = navigator.geolocation;
+    x.getCurrentPosition(success, failure);
+
+    function success(position) {
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
+        showMap(latitude, longitude);
+    }
+
+    function failure() {
+        //setting latitude and longitude for Frankfurt
+        showMap(50.110924, 8.682127);
+    }
+};
+
+const showMap = (latitude, longitude) => {
+    let map;
+    let marker;
+    let myLatlng = new google.maps.LatLng(latitude, longitude);
+
+    let mapOptions = {
+        zoom: 18,
+        center: myLatlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    map = new google.maps.Map(document.getElementById("myMap"), mapOptions);
+
+    marker = new google.maps.Marker({
+        map: map,
+        position: myLatlng,
+        draggable: true
+    });
+
+    showAddressOnMarker(myLatlng, map, marker);
+
+    google.maps.event.addListener(marker, 'dragend', function () {
+        showAddressOnMarker(marker.getPosition(), map, marker);
+    });
+};
+
+const showAddressOnMarker = (position, map, marker) => {
+    let geocoder = new google.maps.Geocoder();
+    let infowindow = new google.maps.InfoWindow();
+    geocoder.geocode({'latLng': position}, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            if (results[0]) {
+                userAddress = results[0].formatted_address;
+                userCity= results[0].address_components[3].long_name;
+                userZipCode= results[0].address_components[6].long_name;
+                infowindow.setContent(results[0].formatted_address);
+                infowindow.open(map, marker);
+            }
+        }
+    });
+};

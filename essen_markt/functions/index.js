@@ -42,8 +42,8 @@ io.sockets.on('connection', function (socket) {
             //if receiver is online or connected
             callback(true);
             //send the chat data to both sender and the receiver
-            userIds[data.receiverId].emit('updateChat', {id: socket.userId, msg: data.msg});
-            userIds[data.senderId].emit('updateChat', {id: socket.userId, msg: data.msg});
+            userIds[data.receiverId].emit('updateChat', {id: data.senderName, msg: data.msg, receiverId: data.senderId});
+            userIds[data.senderId].emit('updateChat', {id: data.senderName, msg: data.msg, receiverId: data.receiverId});
 
         }else {
             //if receiver is not online or connected
