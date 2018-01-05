@@ -8,7 +8,7 @@
     ],
     "rewrites": [
       {
-        "source": "/registerRestaurant",
+        "source": "/getRegisteredRestaurants",
         "function":"app"
       }
     ]

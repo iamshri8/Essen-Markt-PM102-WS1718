@@ -7,15 +7,23 @@ module.exports = function(app, firebaseApp) {
             response.send(snap.val());
         });
     });
+    app.get('/getUserDetails/:uid',(request, response) => {
+        console.log("details:"+ request.params.uid);
+        const ref= firebaseApp.database().ref('/users').child(request.params.uid);
+        ref.on('value', snap => {
+            console.log(snap.val());
+            response.send(snap.val());
+        });
+    });
 
     app.post('/addProduct', (request, response) => {
-        // firebaseApp.database().ref('/products/').push(request.body);
-        // response.send("ok");
-        console.log("here");
-        let productsRef= firebaseApp.database().ref('/products');
-        productsRef.orderByChild('city').equalTo('kiel').once('value', function (snap)  {
-            console.log(snap.val());
-        });
+        firebaseApp.database().ref('/products/').push(request.body);
+        response.send("ok");
+        // console.log("here");
+        // let productsRef= firebaseApp.database().ref('/products');
+        // productsRef.orderByChild('city').equalTo('man').once('value', function (snap)  {
+        //     console.log(snap.val());
+        // });
     });
     app.get('/getRegisteredRestaurants', (request, response) => {
         let array=[];
