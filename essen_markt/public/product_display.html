@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
 
     <!-- Custom styles for this template -->
-    <link href="css/shop-item.css" rel="stylesheet">
+    <link href="css/shop-item.less" rel="stylesheet/less">
     <link href="css/product_display.less" rel="stylesheet/less">
     <script src="lib/less/dist/less.js" type="text/javascript"></script>
 </head>
@@ -38,14 +38,13 @@
             </div>
         </div>
     </nav>
-        </div>
-    </nav>
+
     <div class="container content-container">
         <div class="row">
             <div class="col-lg-3">
                 <div class="filters">
                     <h1>Filters</h1>
-                    <div class="filter-header">
+                    <div class="filter-header-1">
                         Cuisine
                     </div>
                     <div class="filter-values">
@@ -56,15 +55,16 @@
                         <label>Drinks</label>
                         <label>Snacks</label>
                     </div>
-                    <div class="filter-header">
-                        Timings
+                    <div class="filter-header-2">
+                         Item Available Time
                     </div>
                     <div class="filter-values">
-                        <label>Morning(9:00-12:00)</label>
-                        <label>Noon(12:00-16:00)</label>
-                        <label>Evening(16:00-19:00)</label>
-                        <label>Night(19:00-22:00)</label>
-                        <label>Within 2 days</label>
+                        <label>In 1 day</label>
+                        <label>In 2 days</label>
+                        <label>In 3 days</label>
+                        <label>In 4 days</label>
+                        <label>In 5 days</label>
+                        <label>In 6 days</label>
                     </div>
 
                 </div>
@@ -78,19 +78,15 @@
 
                             </div>
                             <div class = "item-content">
-                                 <label> Name of the Item</label><br>
-                                 <label>Price</label><br>
-                                 <label> Discount </label><br>
+                                 <label>Item Name :</label><br>
+                                 <label>Item ID :</label><br>
+                                 <label>Address :</label><br>
+                                <label>Item Available Time :</label><br>
 
                             </div>
 
                         </div>
-                        <div class="owner-des">
-                            <label> Location</label>
-                            <label> Timings </label>
 
-
-                        </div>
                         <div class="owner-contact">
                             <div class="call">Call</div>
                             <div class="chat">Chat</div>
@@ -98,6 +94,52 @@
                     </div>
 
                 </div>
+
+
+
+
+
+
+
+
+                <div class="product-container filters">
+                    <div class="product">
+                        <div class="item-des">
+                            <div class ="image">
+
+                            </div>
+                            <div class = "item-content">
+                                <label>Item Name</label><br>
+                                <label>Item ID</label><br>
+                                <label>Address </label><br>
+                                <label>Item Available Time :</label><br>
+
+                            </div>
+
+                        </div>
+
+                        <div class="owner-contact">
+                            <div class="call">Call</div>
+                            <div class="chat">Chat</div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             </div>
         </div>
 
