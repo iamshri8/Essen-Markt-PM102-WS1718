@@ -1,7 +1,9 @@
-let userId= getQueryVariable("user");
- // var searchBox = new google.maps.places.SearchBox(document.getElementById('mapsearch'));
+let socketReceiver;
+let userName;
 
 $(document).ready(() => {
+    getUserDetails();
+    $('#chat-container').addClass('hidden');
     $('.filter-values').on('click','a', function(event){
         event.preventDefault();
         const id = $(this).attr('id');
@@ -13,12 +15,56 @@ $(document).ready(() => {
         const id = $(this).attr('id');
         retrieveItemsOnTime(id);
     });
-
-    $('a.nav-link.link').attr("href", (n,v) =>{
-        return v+"?user="+userId;
+    // when the client hits ENTER on their keyboard
+    $('#data').keypress(function(e) {
+        if(e.which == 13) {
+            $(this).blur();
+            $('#datasend').focus().click();
+        }
     });
+    // when the client clicks SEND in the chat box
+    $('#datasend').click(function () {
+        var message = $('#data').val();
+        $('#data').val('');
+        if(socketReceiver === userId) {
+            $('#conversation').append( "sorry you are the owner of the item"+ '<br>');
+        } else {
+            // tell server to execute 'sendchat' and pass the sender and receiver details
+            socket.emit('sendChat', {
+                msg: message,
+                receiverId: socketReceiver,
+                senderId: userId,
+                senderName: userName
+            }, function (data) {
+                if (!data) {
+                    $('#conversation').append(" sorry receiver not connected" + '<br>');
+                }
+            });
+        }
+    });
+
+    //update the chat box on receiving message from the server
+    socket.on('updateChat', function (data) {
+        showChatBox(data.receiverId);
+        socketReceiver = data.receiverId;
+        $('#conversation').append( data.id +":" + data.msg + '<br>');
+    });
+
 });
 
+const getUserDetails = () => {
+    $.ajax({
+        url: 'http://localhost:5000/getUserDetails/'+userId,
+        dataType: 'json',
+        type: 'GET',
+        success: function (data) {
+            userName = data.name;
+        },
+        error: function () {
+            $('#conversation').append(" Error occurred while fetching user data" + '<br>');
+        },
+    });
+};
 function retrieveItems(id)  {
     let searchValue;
     let filterType = (id == null) ? 'city' : 'category' ;
@@ -114,3 +160,9 @@ function retrieveIndividual(id)  {
     window.location.href = "individual_search.html" + queryString;
 
 }
+ function showChatBox(id) {
+          socketReceiver= id;
+         $(':input:hidden').attr('disabled', false);
+         $("#chat-container").removeClass("hidden");
+         $(':input:hidden').attr('disabled', true);
+ };

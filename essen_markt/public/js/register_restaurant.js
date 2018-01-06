@@ -1,11 +1,6 @@
-let userId = getQueryVariable("user");
 $(document).ready(() => {
     $("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
-    $('a.nav-link.link').attr("href", (n, v) => {
-        return v + "?user=" + userId;
-    });
     getCurrentLocation();
-
 
     $("#register_restaurant").submit(function () {
         event.preventDefault();

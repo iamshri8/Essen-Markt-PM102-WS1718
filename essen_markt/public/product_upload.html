@@ -62,7 +62,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-        <div id="snackbar">user wants to donate you
+        <div id="snackbar">user wants to donate an item to you
             <button value="yes" onclick=sendResponse(true)>Accept</button>
             <button value="no" onclick=sendResponse(false)>Decline</button>
         </div>
@@ -74,18 +74,19 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
+                    <a class="nav-link link" href="product_display.html">Home</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Product Upload</a>
+                    <a class="nav-link link" href="product_upload.html">Product Upload</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link link" href="register_restaurant.html">Register Restaurant</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="index.html">Logout</a>
+                    <a class="nav-link link" href="your_orders.html">Your Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link link" href="index.html">Logout</a>
                 </li>
             </ul>
         </div>
@@ -104,14 +105,7 @@
                 <a href="#" id="individual" class="list-group-item" onclick=showIndividualUpload()>Individual</a>
 
             </div>
-            <div id="chat-container">
-                <form name="chat">
-                    <div id="conversation" class="chat-box"></div>
-                    <input id="data" class="form-control" value=""
-                           style="float: left;width:78%">
-                    <input type="button" class="btn btn-danger" id="datasend" value="send"/>
-                </form>
-            </div>
+
         </div>
         <!-- /.col-lg-3 -->
 
@@ -256,9 +250,6 @@
                         </div>
 
                         <input type="submit" value="Donate" class="btn btn-primary">
-                        <button type="button" class="btn btn-primary donate-to-restaurant chat" onclick=showChatBox()>
-                            chat
-                        </button>
                         <div id="form-error" style="color:red"></div>
                         <div id="form-success" style="color:green"></div>
 

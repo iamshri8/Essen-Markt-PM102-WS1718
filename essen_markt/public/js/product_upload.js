@@ -1,24 +1,15 @@
 let userAddress;
 let userCity;
 let userZipCode;
-let userId= getQueryVariable("user");
 let registeredRestaurants;
 let user;
-let socketReceiver='lsfoZnaxG5c0sN8XEGlc50W1Cdz2';
+let socketReceiver;
 let isDonateToRestaurant=false;
 let selectedRestaurant;
-let socket = io.connect('http://localhost:5000/');
 
-
-//on connection with server socket
-socket.on('connect', function(){
-    // send the server, userId of the connected user
-    console.log("emit");
-    socket.emit('addUser',userId);
-});
 const setInitialView = () => {
     $("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
-    $('#chat-container').addClass('hidden');
+
     $('.show-individual').addClass("hidden");
     $('.donate-to-restaurant').addClass("hidden");
 };
@@ -28,30 +19,6 @@ $(document).ready(() => {
     getUserDetails();
     getCurrentLocation();
     $(':input:hidden').attr('disabled', true);
-    // when the client clicks SEND in the chat box
-    $('#datasend').click(function () {
-        var message = $('#data').val();
-        $('#data').val('');
-
-        // tell server to execute 'sendchat' and pass the sender and receiver details
-        socket.emit('sendChat', {
-            msg: message,
-            receiverId: socketReceiver,
-            senderId: userId,
-            senderName: user.name
-        }, function (data) {
-            if (!data) {
-                $('#conversation').append(" sorry receiver not connected" + '<br>');
-            }
-        });
-    });
-
-    //update the chat box on receiving message from the server
-    socket.on('updateChat', function (data) {
-        showChatBox();
-        socketReceiver = data.receiverId;
-        $('#conversation').append( data.id +":" + data.msg + '<br>');
-    });
 
     socket.on('respondRequest', function (data) {
         if(data) {
@@ -60,18 +27,9 @@ $(document).ready(() => {
             $("#form-error").html("owner declined your request");
         }
     });
-    // when the client hits ENTER on their keyboard
-    $('#data').keypress(function(e) {
-        if(e.which == 13) {
-            $(this).blur();
-            $('#datasend').focus().click();
-        }
-    });
+
     
-    socket.on("donateRequest", function (data) {
-        $("#snackbar").addClass("show");
-        socketReceiver = data.receiverId;
-    });
+
 
     $("#product_upload").submit(function (event) {
         event.preventDefault();
@@ -79,23 +37,20 @@ $(document).ready(() => {
             if(socketReceiver === userId){
                 $("#form-error").html("sorry !! you are the restaurant owner and you can directly upload the product");
             } else {
+                $('#form-error').html("Sending item acceptance request to restaurant owner ! Your product will be donated only if you get response");
                 socket.emit("donateRequest", {
                     receiverId: socketReceiver,
                     senderId: userId,
                     senderName: user.name
                 }, function (data) {
                     if (!data) {
-                        $('#form-error').append(" sorry receiver not connected" + '<br>');
+                        $('#form-error').html(" sorry receiver not connected" + '<br>');
                     }
                 });
             }
         } else {
            donateAsIndividual();
         }
-    });
-    //set the query params in the navigation url
-    $('a.nav-link.link').attr("href", (n,v) =>{
-        return v+"?user="+userId;
     });
 
     //set the address of the restaurant on select
@@ -207,20 +162,7 @@ const getRegisteredRestaurants = () => {
         },
     });
 };
-const getUserDetails = () => {
-    $.ajax({
-        url: 'http://localhost:5000/getUserDetails/'+userId,
-        dataType: 'json',
-        type: 'GET',
-        success: function (data) {
-            user = data;
-            $('#error').addClass('hidden');
-        },
-        error: function () {
-            $("#error").removeClass("hidden").html("error occurred while fetching user details");
-        },
-    });
-};
+
 const setRestaurantList = () => {
     let data = registeredRestaurants;
     let source = document.getElementById('entry-template').innerHTML;
@@ -275,20 +217,5 @@ const showDonateAsIndividual= () => {
 };
 
 
-const showChatBox =() => {
-    if(selectedRestaurant === "" || selectedRestaurant === undefined) {
-        $("#form-error").html("please select a restaurant");
-    } else  {
-        $(':input:hidden').attr('disabled', false);
-        $("#chat-container").removeClass("hidden");
-        $(':input:hidden').attr('disabled', true);
-    }
-};
 
-const sendResponse = (data) => {
-    socket.emit("respondRequest", {
-        result: data,
-        receiverId: socketReceiver
-    });
-    $("#snackbar").removeClass("show");
-};
+

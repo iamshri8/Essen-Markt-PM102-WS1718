@@ -1,3 +1,22 @@
+
+let userId= getQueryVariable("user");
+let socket = io.connect('http://localhost:5000/');
+//on connection with server socket
+socket.on('connect', function(){
+    // send the server, userId of the connected user
+    console.log("emit");
+    socket.emit('addUser',userId);
+});
+$(document).ready(() => {
+    $('a.nav-link.link').attr("href", (n,v) =>{
+        return v+"?user="+userId;
+    });
+
+    socket.on("donateRequest", function (data) {
+        $("#snackbar").addClass("show");
+        socketReceiver = data.receiverId;
+    });
+});
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split('&');
@@ -7,7 +26,6 @@ function getQueryVariable(variable) {
             return decodeURIComponent(pair[1]).replace(/\+/g, '');
         }
     }
-
     return undefined;
 }
 const getCurrentLocation = () => {
@@ -68,3 +86,10 @@ const showAddressOnMarker = (position, map, marker) => {
     });
 };
 
+const sendResponse = (data) => {
+    socket.emit("respondRequest", {
+        result: data,
+        receiverId: socketReceiver
+    });
+    $("#snackbar").removeClass("show");
+};
