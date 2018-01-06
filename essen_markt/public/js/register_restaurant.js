@@ -1,12 +1,19 @@
-let userId= getQueryVariable("user");
+let userId = getQueryVariable("user");
 $(document).ready(() => {
     $("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
-    $('a.nav-link.link').attr("href", (n,v) =>{
-        return v+"?user="+userId;
+    $('a.nav-link.link').attr("href", (n, v) => {
+        return v + "?user=" + userId;
     });
     getCurrentLocation();
+
+
+    $("#register_restaurant").submit(function () {
+        event.preventDefault();
+        registerRestaurant();
+    });
+
 });
-const registerRestaurant = ()=> {
+const registerRestaurant = () => {
     let detail = {
         userId: userId,
         ownerName: $("#owner-name").val(),
@@ -14,7 +21,7 @@ const registerRestaurant = ()=> {
         contactNumber: $("#contact-number").val(),
         email: $("#email").val(),
         address: userAddress,
-        city: userCity
+        city: userCity.toLowerCase()
     };
     $.ajax({
         url: 'http://localhost:5000/registerRestaurant',
@@ -23,6 +30,7 @@ const registerRestaurant = ()=> {
         type: 'POST',
         success: function () {
             $('#error').addClass('hidden');
+
         },
         error: function () {
             $("#error").removeClass("hidden").append("error occurred in adding user data");

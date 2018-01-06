@@ -17,10 +17,12 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+
 const firebaseApp= firebase.initializeApp(
     {
         credential: firebase.credential.applicationDefault(),
-        databaseURL: "https://foodmarkt-8a675.firebaseio.com"
+        databaseURL: "https://foodmarkt-8a675.firebaseio.com",
+        storageBucket: "foodmarkt-8a675.appspot.com",
     }
 );
 var post = require('./app/requests')(app, firebaseApp);// added to handle requests from client
@@ -36,6 +38,20 @@ io.sockets.on('connection', function (socket) {
         // store the details of all the connected users
         userIds[data]= socket;
         console.log(data);
+    });
+    socket.on('donateRequest', function(data, callback){
+        console.log("here: "+ data.receiverId);
+        if( data.receiverId in userIds) {
+            //if receiver is online or connected
+            callback(true);
+            userIds[data.receiverId].emit('donateRequest', {id: data.senderName, receiverId: data.senderId});
+        }else {
+            callback(false);
+            console.log("no receiver");
+        }
+    });
+    socket.on('respondRequest', function (data) {
+        userIds[data.receiverId].emit('respondRequest',data.result);
     });
     socket.on('sendChat', function (data, callback) {
         if( data.receiverId in userIds){
