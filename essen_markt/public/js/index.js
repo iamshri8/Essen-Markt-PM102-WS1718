@@ -42,7 +42,7 @@ const addUserData = (id, name, email) => {
 const navigateToProductsPage = (data) => {
 
     var queryString = "?user=" + data;
-    window.location.href = "product_upload.html" + queryString;
+    window.location.href = "product_display.html" + queryString;
 };
 
 const userLoginGoogle = () => {
