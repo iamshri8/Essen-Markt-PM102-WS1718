@@ -11,38 +11,12 @@
   position: absolute;
   bottom: 0;
 }
-.filters {
-  background-color: whitesmoke;
-  margin: 40px 5px 5px 5px;
-  padding: 5px 5px 5px 15px;
-  //border-radius: 5px;
 
-  h1{
-    font-family: "Times New Roman", sans-serif;
-  }
-
-  .filter-header {
-
-    font-size: 30px;
-    font-style: italic;
-
-  }
-
-
-  .filter-values {
-    display: flex;
-    flex-direction: column;
-
-    label {
-      margin : 0px;
-    }
-  }
-}
 
 
 
 .product-container{
-
+  margin: 40px 5px 5px 150px;
   padding :5px 5px 5px 5px;
   height : 91%;
   width : 97%;
@@ -64,12 +38,18 @@
     border-bottom-style: ridge;
     flex: 0 0 50%;
     display: flex;
+
+
     .image {
       width: 40%;
-      height: 101%;
+      height: 100%;
       display: flex;
-      flex-direction: column;
+      //flex-direction: column;
       background-color: whitesmoke;
+
+      img {
+        width: 100%;
+      }
     }
     .item-content {
 

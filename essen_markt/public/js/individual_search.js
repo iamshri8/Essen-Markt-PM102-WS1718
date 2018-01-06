@@ -1,6 +1,12 @@
-let itemId= getQueryVariable("user");
+let userId= getQueryVariable("user");
+let itemId= getQueryVariable("id");
 $(document).ready(() => {
     getProductDetails();
+
+    //set the query params in the navigation url
+    $('a.nav-link.link').attr("href", (n,v) =>{
+        return v+"?user="+userId;
+    });
 });
 
 const getProductDetails = () => {
