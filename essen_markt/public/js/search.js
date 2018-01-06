@@ -1,5 +1,5 @@
 let userId= getQueryVariable("user");
-// var searchBox = new google.maps.places.SearchBox(document.getElementById('mapsearch'));
+ // var searchBox = new google.maps.places.SearchBox(document.getElementById('mapsearch'));
 
 $(document).ready(() => {
     $('.filter-values').on('click','a', function(event){
@@ -110,7 +110,7 @@ function retrieveItemsOnTime(id)  {
 
 function retrieveIndividual(id)  {
 
-    var queryString = "?user=" + id;
+    var queryString = "?user=" + userId + "&id=" + id ;
     window.location.href = "individual_search.html" + queryString;
 
 }
