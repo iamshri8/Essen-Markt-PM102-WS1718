@@ -1,7 +1,13 @@
 let socketReceiver;
 let userName;
 
+function showPlaces () {
+    var searchBox = new google.maps.places.SearchBox(document.getElementById('mapsearch'));
+}
+
 $(document).ready(() => {
+
+
     getUserDetails();
     $('#chat-container').addClass('hidden');
     $('.filter-values').on('click','a', function(event){
@@ -21,7 +27,9 @@ $(document).ready(() => {
             $(this).blur();
             $('#datasend').focus().click();
         }
+
     });
+
     // when the client clicks SEND in the chat box
     $('#datasend').click(function () {
         var message = $('#data').val();
@@ -95,6 +103,11 @@ function retrieveItems(id)  {
             console.log(data);
 
             $('.product-container').css("display","block");
+            $('.results').css("display","block");
+
+            let str = (filterType === 'city' ? searchValue : id);
+            $('.results h3').append(' ');
+            $('.results h3').append(' '+str);
 
             if( objCount > 0)  {
                 let context = data;
@@ -134,6 +147,11 @@ function retrieveItemsOnTime(id)  {
             console.log(data);
 
             $('.product-container').css("display","block");
+            $('.results').css("display","block");
+
+            let str = 'In '+id+' day(s)';
+            $('.results h3').append(' '+str);
+
 
             if( objCount > 0)  {
                 let context = data;

@@ -8,7 +8,6 @@
     <meta name="author" content="">
     <title>ESSEN MARKT</title>
 
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPeDra6X_vr0QtwRyhm6QB7JC7r0ccwTA&libraries=places" async defer></script>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
@@ -28,9 +27,10 @@
 
     <script type="text/javascript" src="lib/handlebars/handlebars.js"></script>
 
-
     <script src="js/common.js" type="text/javascript"></script>
     <script src="js/search.js" type="text/javascript"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPeDra6X_vr0QtwRyhm6QB7JC7r0ccwTA&libraries=places&callback=showPlaces" async defer></script>
+
 
 </head>
 <body>
@@ -111,8 +111,17 @@
                 </div>
             </div>
 
+
+
             <div class="col-lg-9">
+                   <div class ="results" id="results" style="display: none;">
+                       <h3>Showing Results for:</h3>
+                   </div>
+
+
                 <div class="product-container filters" style="display: none;">
+
+
 
                 </div>
             </div>
@@ -156,7 +165,7 @@
         </div>
     </div>
     <!-- Footer -->
-    <footer class="py-5 bg-dark main-footer">
+    <footer class="py-sm-3 bg-dark main-footer">
         <!-- /.container -->
     </footer>
 
