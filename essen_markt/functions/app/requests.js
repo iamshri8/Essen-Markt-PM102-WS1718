@@ -46,6 +46,7 @@ module.exports = function(app, firebaseApp) {
        // });
    });
 
+
     app.get('/getRegisteredRestaurants', (request, response) => {
         let array=[];
         let ref= firebaseApp.database().ref('/registeredRestaurants').once('value', (snap) => {

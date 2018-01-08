@@ -16,8 +16,8 @@ const setInitialView = () => {
 
 $(document).ready(() => {
     setInitialView();
-    getUserDetails();
     getCurrentLocation();
+
     $(':input:hidden').attr('disabled', true);
 
     socket.on('respondRequest', function (data) {

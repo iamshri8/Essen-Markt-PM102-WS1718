@@ -5,6 +5,8 @@ var cors = require('cors');
 var app	= express();
 var server= require('http').createServer(app);
 var io= require('socket.io').listen(server);
+var cron= require('node-cron');
+
 
 server.listen(5000,function () {
     console.log('Express server listening on port 5000');
@@ -26,6 +28,11 @@ const firebaseApp= firebase.initializeApp(
     }
 );
 var post = require('./app/requests')(app, firebaseApp);// added to handle requests from client
+
+cron.schedule('0 0 0' +
+    'f * * *', function(){
+    console.log('running a task every two minutes');
+});
 
 var userIds= {};
 
