@@ -28,8 +28,6 @@ $(document).ready(() => {
         }
     });
 
-    
-
 
     $("#product_upload").submit(function (event) {
         event.preventDefault();
@@ -40,8 +38,7 @@ $(document).ready(() => {
                 $('#form-error').html("Sending item acceptance request to restaurant owner ! Your product will be donated only if you get response");
                 socket.emit("donateRequest", {
                     receiverId: socketReceiver,
-                    senderId: userId,
-                    senderName: user.name
+                    senderId: userId
                 }, function (data) {
                     if (!data) {
                         $('#form-error').html(" sorry receiver not connected" + '<br>');
@@ -149,7 +146,7 @@ const uploadProductDetails = (item) => {
 
 const getRegisteredRestaurants = () => {
     $.ajax({
-        url: 'http://localhost:5000/getRegisteredRestaurants',
+        url: 'http://localhost:5000/getRegisteredRestaurants/' + userId,
         dataType: 'json',
         type: 'GET',
         success: function (data) {

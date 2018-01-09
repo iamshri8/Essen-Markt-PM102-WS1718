@@ -24,11 +24,11 @@ const registerRestaurant = () => {
         dataType: 'text',
         type: 'POST',
         success: function () {
-            $('#error').addClass('hidden');
+            $('#form-success').html('registered successfully');
 
         },
         error: function () {
-            $("#error").removeClass("hidden").append("error occurred in adding user data");
+           $('#form-error').html('error in registering please try later')
         },
     });
 };

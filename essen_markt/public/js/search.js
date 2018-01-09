@@ -7,9 +7,7 @@ function showPlaces () {
 
 $(document).ready(() => {
 
-
     getUserDetails();
-    $('#chat-container').addClass('hidden');
     $('.filter-values').on('click','a', function(event){
         event.preventDefault();
         const id = $(this).attr('id');
@@ -55,7 +53,7 @@ $(document).ready(() => {
     socket.on('updateChat', function (data) {
         showChatBox(data.receiverId);
         socketReceiver = data.receiverId;
-        $('#conversation').append( data.id +":" + data.msg + '<br>');
+        $('#conversation').append( '<b>'+ data.id +  '</b>' +"  :" + data.msg + '<br>');
     });
 
 });
@@ -96,20 +94,16 @@ function retrieveItems(id)  {
         dataType: 'json',
         type: 'POST',
         success: function(data) {
-            console.log("success");
             const searchObj  = data;
             const objCount   = data.length;
             let tempArray = [];
-            console.log(data);
-
-            $('.product-container').css("display","block");
             $('.results').css("display","block");
-
             let str = (filterType === 'city' ? searchValue : id);
-            $('.results h3').append(' ');
-            $('.results h3').append(' '+str);
+            $('.results h3').html('Showing Results for: '+str);
 
             if( objCount > 0)  {
+                $('#initial-view').addClass("hidden");
+                $('.product-container').css("display","block");
                 let context = data;
                 let source = document.getElementById('display-template').innerHTML;
                 let template = Handlebars.compile(source);
@@ -117,7 +111,7 @@ function retrieveItems(id)  {
                 $('.product-container').html(html);
             }
             else {
-                $('#product-container').text("No results found");
+                $('.product-container').html("No results found");
             }
         },
         error: function() {
@@ -128,7 +122,6 @@ function retrieveItems(id)  {
 }
 
 function retrieveItemsOnTime(id)  {
-
 
     $.ajax({
 
@@ -150,10 +143,10 @@ function retrieveItemsOnTime(id)  {
             $('.results').css("display","block");
 
             let str = 'In '+id+' day(s)';
-            $('.results h3').append(' '+str);
-
+            $('.results h3').html('Showing Results for: '+str);
 
             if( objCount > 0)  {
+                $('#initial-view').addClass("hidden");
                 let context = data;
                 let source = document.getElementById('display-template').innerHTML;
                 let template = Handlebars.compile(source);
@@ -161,7 +154,7 @@ function retrieveItemsOnTime(id)  {
                 $('.product-container').html(html);
             }
             else {
-                $('#product-container').text("No results found");
+                $('.product-container').html("No results found");
             }
         },
         error: function() {
@@ -172,15 +165,17 @@ function retrieveItemsOnTime(id)  {
 }
 
 
-function retrieveIndividual(id)  {
+const retrieveIndividual= (id) =>  {
 
     var queryString = "?user=" + userId + "&id=" + id ;
     window.location.href = "individual_search.html" + queryString;
+};
 
-}
- function showChatBox(id) {
+const showChatBox = (id) => {
           socketReceiver= id;
-         $(':input:hidden').attr('disabled', false);
-         $("#chat-container").removeClass("hidden");
-         $(':input:hidden').attr('disabled', true);
+         $("#chat-container").addClass("show");
  };
+const showAlertBox = (id) => {
+    $('.modal-body').html('<b>'+"Contact number: "+'</b>'+id);
+    $('#myModal').modal('show');
+};

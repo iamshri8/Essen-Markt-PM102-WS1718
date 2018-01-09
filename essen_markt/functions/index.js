@@ -29,9 +29,33 @@ const firebaseApp= firebase.initializeApp(
 );
 var post = require('./app/requests')(app, firebaseApp);// added to handle requests from client
 
-cron.schedule('0 0 0' +
-    'f * * *', function(){
-    console.log('running a task every two minutes');
+cron.schedule('0 0 0 * * *', function(){
+    console.log('running a task every day');
+    var today = new Date();
+    var dd = today.getDate();
+
+    var mm = today.getMonth()+1;
+    var yyyy = today.getFullYear();
+    if(dd<10)
+    {
+        dd='0'+dd;
+    }
+
+    if(mm<10)
+    {
+        mm='0'+mm;
+    }
+    today = yyyy+'-'+mm+'-'+dd;
+    console.log(today);
+    var ref = firebaseApp.database();
+    var productsRef = firebaseApp.database().ref('/products');
+    var array = [];
+    productsRef.orderByChild('listTime').equalTo(today).once('value', function (snap) {
+        snap.forEach((item) => {
+            console.log(item.val());
+            item.ref.remove();
+        });
+    });
 });
 
 var userIds= {};
@@ -51,15 +75,17 @@ io.sockets.on('connection', function (socket) {
         if( data.receiverId in userIds) {
             //if receiver is online or connected
             callback(true);
-            userIds[data.receiverId].emit('donateRequest', {id: data.senderName, receiverId: data.senderId});
+            userIds[data.receiverId].emit('donateRequest', {receiverId: data.senderId});
         }else {
             callback(false);
             console.log("no receiver");
         }
     });
+
     socket.on('respondRequest', function (data) {
         userIds[data.receiverId].emit('respondRequest',data.result);
     });
+
     socket.on('sendChat', function (data, callback) {
         if( data.receiverId in userIds){
             //if receiver is online or connected
@@ -81,3 +107,4 @@ io.sockets.on('connection', function (socket) {
         console.log(Object.keys(userIds));
     });
 });
+
