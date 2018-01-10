@@ -1,5 +1,8 @@
 module.exports = function (app, firebaseApp) {
 
+    /**
+     * Retrieves all the products from the database
+     */
     app.get('/getProducts', (request, response) => {
         const ref = firebaseApp.database().ref('/products');
         ref.on('value', snap => {
@@ -8,24 +11,33 @@ module.exports = function (app, firebaseApp) {
         });
     });
 
+    /**
+     * Retrieves the user details of a particular user
+     */
     app.get('/getUserDetails/:uid', (request, response) => {
         console.log("details:" + request.params.uid);
         const ref = firebaseApp.database().ref('/users').child(request.params.uid);
         ref.on('value', snap => {
-            console.log(snap.val());
             response.send(snap.val());
         });
     });
+
+    /**
+     * Uploads the product object to the database
+     */
 
     app.post('/addProduct', (request, response) => {
         firebaseApp.database().ref('/products/').push(request.body);
         response.send("ok");
     });
 
+    /**
+     * Deletes a particular product object from the database
+     */
     app.post('/deleteProduct', (request, response) => {
         var ref = firebaseApp.database();
         var productsRef = firebaseApp.database().ref('/products');
-        var array = []
+        var array = [];
         productsRef.orderByChild('id').equalTo(request.body.id).once('value', function (snap) {
             snap.forEach((item) => {
                 console.log(item.val());
@@ -41,7 +53,9 @@ module.exports = function (app, firebaseApp) {
         });
     });
 
-
+    /**
+     * Retrieves the list of registered restaurants
+     */
     app.get('/getRegisteredRestaurants/:uid', (request, response) => {
         let array = [];
         let userId= request.params.uid;
@@ -55,11 +69,17 @@ module.exports = function (app, firebaseApp) {
         });
     });
 
+    /**
+     * Adds the details of a new restaurant to the registered restaurant list
+     */
     app.post('/registerRestaurant', (request, response) => {
         firebaseApp.database().ref('/registeredRestaurants/').push(request.body);
         response.send("ok");
     });
 
+    /**
+     * Retrieves the product details based on the filter values
+     */
     app.post('/search', (request, response) => {
         console.log('inside search ' + request.body.searchVal);
         console.log('filterType ' + request.body.filter);
@@ -75,6 +95,9 @@ module.exports = function (app, firebaseApp) {
         }
     });
 
+    /**
+     * Adds the details of a user to the database
+     */
     app.post('/addUser', (request, response) => {
         console.log(request.body.id + request.body.name + request.body.mail);
         firebaseApp.database().ref('/users/' + request.body.id).set({

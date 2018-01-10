@@ -1,6 +1,7 @@
 let socketReceiver;
 let userName;
 
+//Added api to display cities based on search
 function showPlaces () {
     var searchBox = new google.maps.places.SearchBox(document.getElementById('mapsearch'));
 }
@@ -8,12 +9,15 @@ function showPlaces () {
 $(document).ready(() => {
 
     getUserDetails();
+
+    //category filter click
     $('.filter-values').on('click','a', function(event){
         event.preventDefault();
         const id = $(this).attr('id');
         retrieveItems(id);
     });
 
+    //list time filter click
     $('.filter-values-days').on('click','a', function(event){
         event.preventDefault();
         const id = $(this).attr('id');
@@ -32,7 +36,8 @@ $(document).ready(() => {
     $('#datasend').click(function () {
         var message = $('#data').val();
         $('#data').val('');
-        if(socketReceiver === userId) {
+
+        if(socketReceiver === userId) {//when the user is the actual owner of the item
             $('#conversation').append( "sorry you are the owner of the item"+ '<br>');
         } else {
             // tell server to execute 'sendchat' and pass the sender and receiver details
@@ -58,6 +63,9 @@ $(document).ready(() => {
 
 });
 
+/**
+ * Used to get the user details from database
+ */
 const getUserDetails = () => {
     $.ajax({
         url: 'http://localhost:5000/getUserDetails/'+userId,
@@ -71,7 +79,12 @@ const getUserDetails = () => {
         },
     });
 };
-function retrieveItems(id)  {
+
+
+/**
+ * Retrieves the product details based on filter
+ */
+const  retrieveItems =(id)=>  {
     let searchValue;
     let filterType = (id == null) ? 'city' : 'category' ;
 
@@ -119,15 +132,31 @@ function retrieveItems(id)  {
             $("#error").append("error occurred in displaying user data");
         },
     });
-}
+};
 
-function retrieveItemsOnTime(id)  {
+/**
+ * Retrieve product list base on time
+ */
+const retrieveItemsOnTime = (id) =>  {
+    var today = new Date();
+    today.setDate(today.getDate()+parseInt(id));
+    var dd = today.getDate();
+    var mm = today.getMonth()+1;
+    var yyyy = today.getFullYear();
+    if(dd<10)
+    {
+        dd='0'+dd;
+    }
 
+    if(mm<10)
+    {
+        mm='0'+mm;
+    }
+    today = yyyy+'-'+mm+'-'+dd;
     $.ajax({
-
         url: 'http://localhost:5000/search',
         data: {
-            searchVal: id,
+            searchVal: today,
             filter:'listTime'
         },
         dataType: 'json',
@@ -162,9 +191,11 @@ function retrieveItemsOnTime(id)  {
             $("#error").append("error occurred in displaying user data");
         },
     });
-}
+};
 
-
+/**
+ * Navigate to product detailed description view
+ */
 const retrieveIndividual= (id) =>  {
 
     var queryString = "?user=" + userId + "&id=" + id ;
@@ -175,6 +206,7 @@ const showChatBox = (id) => {
           socketReceiver= id;
          $("#chat-container").addClass("show");
  };
+
 const showAlertBox = (id) => {
     $('.modal-body').html('<b>'+"Contact number: "+'</b>'+id);
     $('#myModal').modal('show');

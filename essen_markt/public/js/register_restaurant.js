@@ -6,7 +6,6 @@ $(document).ready(() => {
         event.preventDefault();
         registerRestaurant();
     });
-
 });
 const registerRestaurant = () => {
     let detail = {

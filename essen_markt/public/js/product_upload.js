@@ -16,10 +16,11 @@ const setInitialView = () => {
 
 $(document).ready(() => {
     setInitialView();
-    getCurrentLocation();
+    getCurrentLocation(); //to display google api
 
     $(':input:hidden').attr('disabled', true);
 
+    //Response received for donate request
     socket.on('respondRequest', function (data) {
         if(data) {
             donateToRestaurant();
@@ -31,7 +32,7 @@ $(document).ready(() => {
 
     $("#product_upload").submit(function (event) {
         event.preventDefault();
-        if(isDonateToRestaurant) {
+        if(isDonateToRestaurant) { //send request to owner if donation is made to restaurant
             if(socketReceiver === userId){
                 $("#form-error").html("sorry !! you are the restaurant owner and you can directly upload the product");
             } else {
@@ -94,6 +95,7 @@ const donateToRestaurant = () => {
         uploadProductDetails(item);
     }
 };
+
 const donateAsIndividual = () => {
     let item = {
         id: Date.now(),
