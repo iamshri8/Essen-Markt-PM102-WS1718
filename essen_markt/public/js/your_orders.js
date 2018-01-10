@@ -1,4 +1,3 @@
-userId = getQueryVariable("user");
 $(document).ready (() => {
     getOrderHistory();
 });
