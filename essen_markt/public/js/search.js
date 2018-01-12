@@ -107,21 +107,16 @@ const  retrieveItems =(id)=>  {
         dataType: 'json',
         type: 'POST',
         success: function(data) {
-            const searchObj  = data;
-            const objCount   = data.length;
-            let tempArray = [];
             $('.results').css("display","block");
+
             let str = (filterType === 'city' ? searchValue : id);
             $('.results h3').html('Showing Results for: '+str);
 
-            if( objCount > 0)  {
+            if( data.length > 0)  {
                 $('#initial-view').addClass("hidden");
                 $('.product-container').css("display","block");
-                let context = data;
-                let source = document.getElementById('display-template').innerHTML;
-                let template = Handlebars.compile(source);
-                let html = template({context});
-                $('.product-container').html(html);
+
+                displayTemplate(data);
             }
             else {
                 $('.product-container').html("No results found");
@@ -143,16 +138,15 @@ const retrieveItemsOnTime = (id) =>  {
     var dd = today.getDate();
     var mm = today.getMonth()+1;
     var yyyy = today.getFullYear();
+
     if(dd<10)
-    {
         dd='0'+dd;
-    }
 
     if(mm<10)
-    {
         mm='0'+mm;
-    }
+
     today = yyyy+'-'+mm+'-'+dd;
+
     $.ajax({
         url: 'http://localhost:5000/search',
         data: {
@@ -162,25 +156,18 @@ const retrieveItemsOnTime = (id) =>  {
         dataType: 'json',
         type: 'POST',
         success: function(data) {
-            console.log("success");
-            const searchObj  = data;
-            const objCount   = data.length;
-            let tempArray = [];
-            console.log(data);
-
+            $('#initial-view').addClass("hidden");
             $('.product-container').css("display","block");
             $('.results').css("display","block");
 
-            let str = 'In '+id+' day(s)';
-            $('.results h3').html('Showing Results for: '+str);
+            let resultLabel = 'In '+id+' day(s)';
+            $('.results h3').html('Showing Results for: '+resultLabel);
 
-            if( objCount > 0)  {
+            if( data.length > 0)  {
                 $('#initial-view').addClass("hidden");
-                let context = data;
-                let source = document.getElementById('display-template').innerHTML;
-                let template = Handlebars.compile(source);
-                let html = template({context});
-                $('.product-container').html(html);
+                $('.product-container').css("display","block");
+
+                displayTemplate(data);
             }
             else {
                 $('.product-container').html("No results found");

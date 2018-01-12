@@ -81,23 +81,19 @@ module.exports = function (app, firebaseApp) {
      * Retrieves the product details based on the filter values
      */
     app.post('/search', (request, response) => {
-        console.log('inside search ' + request.body.searchVal);
-        console.log('filterType ' + request.body.filter);
         let array = [];
-        if (request.body.searchVal != null && request.body.filter != null) {
-            const cityRef = firebaseApp.database().ref('/products');
-            cityRef.orderByChild(request.body.filter).equalTo(request.body.searchVal).once('value', function (snap) {
-                snap.forEach((child) => {
-                    array.push(child.val());
-                });
-                response.send(array);
+        const cityRef = firebaseApp.database().ref('/products');
+        cityRef.orderByChild(request.body.filter).equalTo(request.body.searchVal).once('value', function (snap) {
+            snap.forEach((child) => {
+                array.push(child.val());
             });
-        }
+                response.send(array);
+        });
     });
 
     /**
      * Adds the details of a user to the database
-     */
+0 *    */
     app.post('/addUser', (request, response) => {
         console.log(request.body.id + request.body.name + request.body.mail);
         firebaseApp.database().ref('/users/' + request.body.id).set({

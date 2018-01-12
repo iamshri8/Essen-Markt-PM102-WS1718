@@ -45,6 +45,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
+            <!-- searchbox for filtering based on city -->
             <input type="text" class="form-control " id="mapsearch" placeholder="Enter city name" />
             <button type="button" class="btn btn-primary " onclick="retrieveItems()"> Search </button>
 
@@ -75,6 +76,8 @@
     <div class="container content-container">
         <div class="row">
             <div class="col-lg-3">
+
+                <!-- Filters for the products -->
                 <div class="filters">
                     <h1>Filters</h1>
                     <div class="filter-header-1">
@@ -104,16 +107,21 @@
             </div>
 
             <div class="col-lg-9">
+
+                    <!-- inital view of the home page -->
                     <div id="initial-view">
-                       No results found ! Please select a filter or search for a city
+                        No results found ! Please select a filter or search for a city
                     </div>
 
+                   <!-- label for the results -->
                    <div class ="results" id="results" style="display: none;">
                        <h3></h3>
                    </div>
 
+                <!-- display search results -->
                 <div class="product-container filters" style="display: none;">
                 </div>
+
             </div>
 
             <!-- product template -->
